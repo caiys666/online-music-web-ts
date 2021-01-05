@@ -1,0 +1,49 @@
+.main__nav {
+  position: sticky;
+  left: 0;
+  top: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #eeeaea;
+  border-right: 1px solid rgb(80, 79, 79);
+  &__logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    span {
+      font-size: 30px;
+    }
+    span:nth-child(2) {
+      color: red;
+    }
+  }
+  &__title {
+    text-align: left;
+    margin: 10px 0 0 10px;
+  }
+  &__item {
+    width: 250px;
+    .button {
+      display: flex;
+      align-items: center;
+      margin: 0;
+      border: none;
+      width: 100%;
+      height: 40px;
+      text-align: left;
+      padding-left: 50px;
+      border-right: 1px solid black;
+      border-radius: 0;
+      background-color: #eeeaea;
+      color: rgb(107, 107, 107);
+    }
+    .actived {
+      background-color: pink;
+    }
+    .button:hover {
+      background-color: rgb(224, 223, 223);
+      color: black;
+    }
+  }
+}
