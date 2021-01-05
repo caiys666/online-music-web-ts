@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="main__nav-content">
-      <Nav @checkComponent="checkComponent" />
+      <Nav class="nav" @checkComponent="checkComponent" />
       <div class="content">
         <UserTop />
         <keep-alive>

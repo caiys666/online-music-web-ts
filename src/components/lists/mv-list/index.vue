@@ -15,8 +15,8 @@
     <div :class="[isGrid ? 'layout-entry' : 'grid-entry']">
       <div
         :class="[isGrid ? 'layout-entry__item' : 'grid-entry__item']"
-        v-for="(item, index) in 10"
-        :key="item"
+        v-for="(item, index) in mvList"
+        :key="index"
       >
         <div class="item">
           <div class="item-img">
@@ -24,20 +24,22 @@
               class="mvimg"
               :style="[
                 {
-                  background: `url(${srcUrl})`,
+                  background: `url(${item.cover})`,
                 },
               ]"
             >
               <i class="iconfont iconicon_play"></i>
             </div>
-            <span class="mvduration">05:35</span>
+            <span class="mvduration">{{ item.duration }}</span>
           </div>
           <div class="item-desc">
-            <div class="item-title">当时的我害怕极了</div>
+            <div class="item-title">
+              {{ item.name }}---{{ item.artistName }}
+            </div>
             <div class="item-info">
               <div class="info">
                 <i class="iconfont iconicon_play"></i>
-                <span>255万</span>
+                <span>{{ item.playCount }}</span>
               </div>
               <div class="info">
                 <i class="iconfont iconshi_jian"></i>
@@ -45,7 +47,12 @@
               </div>
               <div class="info">
                 <i class="iconfont iconuser-01"></i>
-                <span class="author">cabbage</span>
+                <span
+                  class="author"
+                  v-for="(sitem, sindex) in item.artists"
+                  :key="sindex"
+                  >{{ sitem.name }}</span
+                >
               </div>
             </div>
           </div>
@@ -56,11 +63,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import "./index.less";
 
 @Component
 export default class MvList extends Vue {
+  @Prop() private mvList!: Array<Object>;
+  @Watch("mvList", { immediate: true, deep: true })
+  getMvList(newValue: any) {
+    console.log(newValue);
+    this.mvList = newValue;
+  }
   // 选择网格布局还是线性布局标志
   isGrid: boolean = true;
   srcUrl = require("../../../assets/images/dilireba@2x.jpg");
@@ -71,6 +84,9 @@ export default class MvList extends Vue {
     } else if (index === 0) {
       this.isGrid = false;
     }
+  }
+  mounted() {
+    console.log(this.mvList);
   }
 }
 </script>

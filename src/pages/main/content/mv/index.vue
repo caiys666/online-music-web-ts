@@ -7,8 +7,10 @@
         src="../../../../assets/images/girl@2x.png"
         alt=""
       />
-      <el-input placeholder="请输入内容"> </el-input>
-      <el-button type="primary" icon="el-icon-search">搜索</el-button>
+      <el-input placeholder="请输入内容" v-model="inputValue"> </el-input>
+      <el-button type="primary" icon="el-icon-search" @click="handleSearch"
+        >搜索</el-button
+      >
     </div>
     <div class="mv__sort">
       <div
@@ -22,7 +24,7 @@
         </div>
       </div>
     </div>
-    <mv-list />
+    <mv-list :mvList="mvList" />
   </div>
 </template>
 
@@ -37,6 +39,15 @@ import "./index.less";
   components: { MvBanner, MvList },
 })
 export default class Mv extends Vue {
+  // 输入框绑定value
+  inputValue: string = "";
+  // 搜索需要的参数对象
+  searchParams: any = {
+    keywords: "",
+    limit: 50,
+    offset: 0,
+    type: 1004,
+  };
   // 轮播图数组
   bannerList: any = [];
   // 排序数组
@@ -71,12 +82,24 @@ export default class Mv extends Vue {
       ],
     },
   ];
+  // 传递到子组件中的mv数据数组
+  mvList: any = [];
   mounted() {
     let getBanner = getMusicInfo;
     /** 获取推荐mv进行轮播 */
     getBanner("/cloud/personalized/mv").then((res) => {
       this.bannerList = res.data.result;
       console.log(this.bannerList);
+    });
+  }
+  /** 点击搜索按钮进行搜索  搜索的结果只包含视频 */
+  handleSearch() {
+    this.searchParams.keywords = this.inputValue;
+    let getMusicMv = getMusicInfo;
+    getMusicMv("/cloud/cloudsearch", {
+      params: this.searchParams,
+    }).then((res) => {
+      this.mvList = res.data.result.mvs;
     });
   }
 }
