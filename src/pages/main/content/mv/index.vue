@@ -17,20 +17,24 @@
         :key="index"
       >
         <div class="title">{{ item.title }}</div>
+        <div class="option" v-for="(sitem, sindex) in item.item" :key="sindex">
+          {{ sitem.desc }}
+        </div>
       </div>
     </div>
+    <mv-list />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { getMusicInfo } from "@/api/getMusic";
-import MvBanner from "@/components/banner/mv-banner/index.vue";
+import MvBanner from "@/components/lists/mv-banner/index.vue";
+import MvList from "@/components/lists/mv-list/index.vue";
 import "./index.less";
-// import '../../../../assets'
 
 @Component({
-  components: { MvBanner },
+  components: { MvBanner, MvList },
 })
 export default class Mv extends Vue {
   // 轮播图数组
