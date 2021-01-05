@@ -16,9 +16,9 @@ const routes: Array<RouteConfig> = [
     component: () => import("../pages/main/Main.vue"),
   },
   {
-    path: "/main",
-    name: "Main",
-    component: () => import("../pages/main/Main.vue"),
+    path: "/mvDetail",
+    name: "MvDetail",
+    component: () => import("../pages/mv-detail/index.vue"),
   },
 ];
 

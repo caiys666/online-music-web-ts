@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "15838586",
+      "name": "comment-filling",
+      "font_class": "comment-filling",
+      "unicode": "e689",
+      "unicode_decimal": 59017
+    },
+    {
       "icon_id": "7168808",
       "name": "shi_jian(2)",
       "font_class": "shi_jian",

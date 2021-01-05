@@ -27,6 +27,7 @@
                   background: `url(${item.cover})`,
                 },
               ]"
+              @click="handleGoDetail(item)"
             >
               <i class="iconfont iconicon_play"></i>
             </div>
@@ -87,6 +88,16 @@ export default class MvList extends Vue {
   }
   mounted() {
     console.log(this.mvList);
+  }
+  /** 点击图片进入mv详情页面 */
+  handleGoDetail(item: any) {
+    let routeUrl = this.$router.resolve({
+      name: "MvDetail",
+      query: {
+        id: item.id,
+      },
+    });
+    window.open(routeUrl.href, "_blank");
   }
 }
 </script>

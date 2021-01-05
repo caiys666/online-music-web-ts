@@ -1,0 +1,35 @@
+.mv-detail {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 5vw;
+  &__left {
+    width: 50%;
+    text-align: left;
+    .mv-info {
+      width: 100%;
+      &__name {
+        font-size: 1.2vw;
+      }
+      &__introduce {
+        display: flex;
+        .info {
+          margin-right: 0.5vw;
+          color: rgb(129, 130, 131);
+        }
+      }
+    }
+    .mv-video {
+      width: 100%;
+      margin-top: 1vw;
+      video {
+        width: 49vw;
+      }
+    }
+  }
+  &__right {
+    width: 20%;
+    height: 100px;
+    background-color: salmon;
+  }
+}
