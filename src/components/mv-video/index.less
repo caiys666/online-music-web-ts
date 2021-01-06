@@ -1,0 +1,68 @@
+.mv {
+  width: 100%;
+  .mv-video {
+    width: 100%;
+    margin-top: 1vw;
+    background-color: black;
+    padding: 0.5vw;
+    .video-item {
+      position: relative;
+      width: 48.5vw;
+      video {
+        width: 100%;
+        cursor: pointer;
+      }
+      .play-btn {
+        position: absolute;
+        bottom: 1vw;
+        right: 0;
+        width: 100px;
+        text-align: center;
+        color: white;
+        img {
+          width: 2.5vw;
+          height: 2.5vw;
+          cursor: pointer;
+        }
+      }
+    }
+    .video-operation {
+      color: white;
+      .opera {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        &__left,
+        &__right {
+          display: flex;
+          align-items: center;
+          font-size: 0.5vw;
+          .commend {
+            width: auto;
+            margin-left: 0.8vw;
+            cursor: pointer;
+          }
+          .speed {
+            width: 2.3vw;
+          }
+          .volume {
+            position: relative;
+            input {
+              display: inline-block;
+              position: absolute;
+              transform: rotate(-90deg);
+              bottom: 0;
+              height: 0.2vw;
+              width: 10vw;
+              margin-bottom: 7vw;
+              margin-left: -4.5vw;
+            }
+          }
+          .iconfont {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}

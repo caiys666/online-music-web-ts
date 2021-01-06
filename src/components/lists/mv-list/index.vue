@@ -12,7 +12,10 @@
         @click="handleSwitch(0)"
       ></i>
     </div>
-    <div :class="[isGrid ? 'layout-entry' : 'grid-entry']">
+    <div
+      :class="[isGrid ? 'layout-entry' : 'grid-entry']"
+      v-loading.fullscreen.lock="fullscreenLoading"
+    >
       <div
         :class="[isGrid ? 'layout-entry__item' : 'grid-entry__item']"
         v-for="(item, index) in mvList"
@@ -77,6 +80,8 @@ export default class MvList extends Vue {
   }
   // 选择网格布局还是线性布局标志
   isGrid: boolean = true;
+  // 刷新标志
+  fullscreenLoading: boolean = true;
   srcUrl = require("../../../assets/images/dilireba@2x.jpg");
   /** 进行切换布局  1代表网格布局  0代表线性布局 */
   handleSwitch(index: number) {
@@ -87,7 +92,9 @@ export default class MvList extends Vue {
     }
   }
   mounted() {
-    console.log(this.mvList);
+    if (this.mvList) {
+      this.fullscreenLoading = false;
+    }
   }
   /** 点击图片进入mv详情页面 */
   handleGoDetail(item: any) {
