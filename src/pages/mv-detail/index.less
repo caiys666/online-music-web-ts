@@ -19,12 +19,26 @@
         }
       }
     }
-    .mv-video {
-      width: 100%;
-      margin-top: 1vw;
-      video {
-        width: 49vw;
+    .mv-praise {
+      display: flex;
+      align-items: center;
+      height: 5vw;
+      border-bottom: 1px solid rgb(160, 160, 160);
+      &__item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-right: 2vw;
         cursor: pointer;
+        .iconfont {
+          padding-right: 5px;
+          font-size: 1.5vw;
+          color: rgb(114, 115, 116);
+        }
+      }
+      &__item:hover,
+      &__item:hover > .iconfont {
+        color: #04b2f7;
       }
     }
   }

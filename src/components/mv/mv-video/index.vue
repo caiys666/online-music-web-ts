@@ -18,7 +18,7 @@
         ></video>
         <div class="play-btn" v-show="isShowPauseBtn">
           <img
-            src="../../assets/images/music@2x.png"
+            src="../../../assets/images/music@2x.png"
             alt=""
             @click="handleChangeVideo"
           />

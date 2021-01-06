@@ -16,6 +16,17 @@
         </div>
       </div>
       <MvVideo :currentMv="currentMv" :mvItem="mvItem" />
+      <div class="mv-praise">
+        <div
+          class="mv-praise__item"
+          v-for="(item, index) in praiseList"
+          :key="index"
+        >
+          <i class="iconfont" :class="item.icon"></i>
+          <div>{{ item.content }}</div>
+        </div>
+      </div>
+      <MvComment :mvid="mvid" />
     </div>
     <div class="mv-detail__right"></div>
   </div>
@@ -24,11 +35,13 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { getMusicInfo } from "@/api/getMusic";
-import MvVideo from "@/components/mv-video/index.vue";
+import MvVideo from "@/components/mv/mv-video/index.vue";
+import MvComment from "@/components/mv/mv-comment/index.vue";
+
 import "./index.less";
 
 @Component({
-  components: { MvVideo },
+  components: { MvVideo, MvComment },
 })
 export default class MvDetail extends Vue {
   mvid: any = "";
@@ -36,6 +49,14 @@ export default class MvDetail extends Vue {
   mvItem: any = "";
   // 当前mv
   currentMv: any = "";
+  // 点赞\分享等数组列表
+  praiseList: any = [
+    { title: "点赞", icon: "icondianzan", content: "" },
+    { title: "打赏", icon: "icondashang", content: "" },
+    { title: "收藏", icon: "iconcollection-b", content: "" },
+    { title: "转发", icon: "iconzhuanfa", content: "" },
+    { title: "不看好", icon: "icondislike-b", content: "" },
+  ];
   // 获取mv地址参数对象
   mvUrlParams: any = {
     id: "",
@@ -52,6 +73,31 @@ export default class MvDetail extends Vue {
   getInfoById(id: any) {
     getMusicInfo("/cloud/mv/detail", { params: { mvid: id } }).then((res) => {
       this.mvItem = res.data.data;
+      this.praiseList.forEach((k: any) => {
+        switch (k.title) {
+          case "点赞": {
+            k.content = this.mvItem.subCount;
+            break;
+          }
+          case "打赏": {
+            k.content = this.mvItem.subCount;
+            break;
+          }
+          case "收藏": {
+            k.content = this.mvItem.subCount;
+            break;
+          }
+          case "转发": {
+            k.content = this.mvItem.shareCount;
+            break;
+          }
+          case "不看好": {
+            k.content = this.mvItem.commentCount;
+            break;
+          }
+        }
+      });
+      console.log(this.praiseList);
     });
   }
   /** 获取mv地址 */
