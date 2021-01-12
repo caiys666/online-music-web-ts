@@ -19,6 +19,8 @@ import Nav from "@/components/nav/index.vue";
 import UserTop from "@/components/user-top/index.vue";
 import Play from "@/components/play/index.vue";
 import HomePage from "@/pages/main/content/home-page/index.vue";
+
+import music from '@/api/music'
 import "./main.less";
 
 @Component({
@@ -37,6 +39,12 @@ export default class Main extends Vue {
   checkComponent(component: any) {
     this.currentComponent = component;
     console.log(this.currentComponent);
+  }
+
+  mounted() {
+   music.getBannerList().then(res=>{
+     console.log(res.data)
+   })
   }
 }
 </script>
