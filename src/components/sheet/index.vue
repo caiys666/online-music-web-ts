@@ -31,110 +31,110 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { getResponse, getArgaResponse, getMusicInfo } from "@/api/getMusic";
-import PlayList from "@/pages/main/content/play-list/index.vue";
-import "./index.less";
-import axios from "axios";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import { getResponse, getArgaResponse, getMusicInfo } from '@/api/getMusic'
+import PlayList from '@/pages/main/content/play-list/index.vue'
+import './index.less'
+import axios from 'axios'
 
 @Component({
-  components: { PlayList },
+  components: { PlayList }
 })
 export default class Sheet extends Vue {
-  @Prop() private songSheetUrl!: string;
-  @Prop() private SheetList!: Array<any>;
-  @Prop() private cat!: any;
+  @Prop() private songSheetUrl!: string
+  @Prop() private SheetList!: Array<any>
+  @Prop() private cat!: any
 
-  SongSheetList: any = [];
-  offset = 1;
-  collectionIndex = -1;
+  SongSheetList: any = []
+  offset = 1
+  collectionIndex = -1
   /** 点击歌单进行歌曲数组初始化  并且跳转到播放列表 */
   async handleCollection(item: any, index: any) {
-    this.collectionIndex = index;
+    this.collectionIndex = index
     const data = {
       params: {
-        id: item.id,
-      },
-    };
-    let trackIds: any = [];
-    const songIds: any = [];
-    const songLists: any = [];
-    const songLyric: any = [];
-    const getTrackIds = getMusicInfo;
-    const getSongIds = getMusicInfo;
-    const getSongUrl = getMusicInfo;
-    const getSongLyric = getMusicInfo;
+        id: item.id
+      }
+    }
+    let trackIds: any = []
+    const songIds: any = []
+    const songLists: any = []
+    const songLyric: any = []
+    const getTrackIds = getMusicInfo
+    const getSongIds = getMusicInfo
+    const getSongUrl = getMusicInfo
+    const getSongLyric = getMusicInfo
     this.$nextTick(() => {
       /** 获取歌曲trackid */
-      getTrackIds("/cloud/playlist/detail", data).then((res) => {
-        trackIds = res.data.playlist.trackIds;
-        getSongId();
-      });
+      getTrackIds('/cloud/playlist/detail', data).then(res => {
+        trackIds = res.data.playlist.trackIds
+        getSongId()
+      })
       /** 获取歌曲信息 */
       let getSongId = () => {
         trackIds.map((k: any) => {
-          let songData = { params: { ids: k.id } };
+          let songData = { params: { ids: k.id } }
           /** 获取歌曲id */
-          getSongIds("/cloud/song/detail", songData).then((res) => {
-            songIds.push(res.data.songs[0]);
+          getSongIds('/cloud/song/detail', songData).then(res => {
+            songIds.push(res.data.songs[0])
             const songUrlData = {
-              params: { id: res.data.songs[0].id },
-            };
+              params: { id: res.data.songs[0].id }
+            }
             /** 获取歌曲url */
-            getSongUrl("/cloud/song/url", songUrlData).then((res) => {
-              songLists.push(res.data.data[0]);
-              this.$store.commit("initSongLists", songLists);
-            });
+            getSongUrl('/cloud/song/url', songUrlData).then(res => {
+              songLists.push(res.data.data[0])
+              this.$store.commit('initSongLists', songLists)
+            })
             /** 获取歌词信息 */
-            getSongLyric("/cloud/lyric", songUrlData).then((res) => {
-              songLyric.push(res.data.lrc.lyric);
-              this.$store.commit("initSongLyric", songLyric);
-            });
-          });
-        });
+            getSongLyric('/cloud/lyric', songUrlData).then(res => {
+              songLyric.push(res.data.lrc.lyric)
+              this.$store.commit('initSongLyric', songLyric)
+            })
+          })
+        })
         /** 将信息存储到store中 */
-        this.$store.commit("initSongIds", songIds);
-      };
-    });
-    let currentIndex: number = Math.random();
-    this.$store.commit("setCurrentComponent", {
+        this.$store.commit('initSongIds', songIds)
+      }
+    })
+    let currentIndex: number = Math.random()
+    this.$store.commit('setCurrentComponent', {
       currentIndex: currentIndex,
       currentComponent: PlayList,
       currentNavIndex: 0,
-      currentItemIndex: 2,
-    });
+      currentItemIndex: 2
+    })
   }
   addSheetItem() {
-    const url = "/top/playlist";
+    const url = '/top/playlist'
     const data = {
       cat: this.cat,
-      offset: this.offset,
-    };
+      offset: this.offset
+    }
     if (this.offset < 26) {
       // setInterval(() => {
-      let addSheet = getArgaResponse;
+      let addSheet = getArgaResponse
       addSheet(url, data).then((result: any) => {
-        this.SongSheetList.push(...result.playlists);
-        this.offset++;
-        console.log(this.SongSheetList);
-      });
+        this.SongSheetList.push(...result.playlists)
+        this.offset++
+        console.log(this.SongSheetList)
+      })
       // }, 5000);
     }
   }
-  @Watch("SheetList", { immediate: true, deep: true })
+  @Watch('SheetList', { immediate: true, deep: true })
   getInfo(newValue: any, oldValue: any) {
-    console.log(newValue);
-    this.SongSheetList = [];
-    this.addSheetItem();
+    console.log(newValue)
+    this.SongSheetList = []
+    this.addSheetItem()
   }
   mounted() {
     if (this.songSheetUrl) {
-      const getTopList = getResponse;
+      const getTopList = getResponse
       getTopList(this.songSheetUrl).then((result: any) => {
-        this.SongSheetList = result.playlists;
-      });
+        this.SongSheetList = result.playlists
+      })
     }
-    this.addSheetItem();
+    this.addSheetItem()
   }
 }
 </script>

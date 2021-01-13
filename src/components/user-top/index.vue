@@ -8,12 +8,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import "./index.less";
+import { Component, Vue } from 'vue-property-decorator'
+import './index.less'
 
 @Component
 export default class UserTop extends Vue {
-  userName = "蔡永生";
+  userName = '蔡永生'
 }
 </script>
 

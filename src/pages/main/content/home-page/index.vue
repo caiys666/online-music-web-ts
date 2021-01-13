@@ -16,55 +16,55 @@
 </template>
 
 <script lang="ts">
-import { getBanner, getTest } from "@/api/getMusic.ts";
-import { Component, Vue, Watch } from "vue-property-decorator";
-import Selected from "./selected/index.vue";
-import Rank from "./rank/index.vue";
-import SongCategory from "./song-category/index.vue";
-import "./index.less";
+import { getBanner, getTest } from '@/api/getMusic.ts'
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import Selected from './selected/index.vue'
+import Rank from './rank/index.vue'
+import SongCategory from './song-category/index.vue'
+import './index.less'
 
 @Component({
-  components: { Selected, Rank, SongCategory },
+  components: { Selected, Rank, SongCategory }
 })
 export default class HomePage extends Vue {
-  list = [];
-  bannerList = [];
-  songSheetUrl = "/top/playlist";
-  currentComponent = Selected;
+  list = []
+  bannerList = []
+  songSheetUrl = '/top/playlist'
+  currentComponent = Selected
   categoryList = [
     {
-      title: "精选",
+      title: '精选',
       selected: true,
-      url: "/top/playlist",
-      component: Selected,
+      url: '/top/playlist',
+      component: Selected
     },
     {
-      title: "歌单分类",
+      title: '歌单分类',
       selected: false,
-      url: "/playlist/catlist",
-      component: SongCategory,
+      url: '/playlist/catlist',
+      component: SongCategory
     },
     {
-      title: "排行榜",
+      title: '排行榜',
       selected: false,
-      url: "/toplist/detail",
-      component: Rank,
-    },
-  ];
+      url: '/toplist/detail',
+      component: Rank
+    }
+  ]
   mounted() {
-    let list = getBanner();
+    let list = getBanner()
     list.then((response: any) => {
-      this.list = response;
-    });
+      this.list = response
+    })
   }
   /** 点击切换歌单 */
   handleClickCategory(item: any) {
-    this.categoryList.map((k) => {
-      k.selected = false;
-    });
-    item.selected = true;
-    this.currentComponent = item.component;
-    this.songSheetUrl = item.url;
+    this.categoryList.map(k => {
+      k.selected = false
+    })
+    item.selected = true
+    this.currentComponent = item.component
+    this.songSheetUrl = item.url
   }
 }
 </script>

@@ -7,31 +7,31 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import { getResponse } from "@/api/getMusic";
-import Sheet from "@/components/sheet/index.vue";
-import "./index.less";
+import { Component, Vue, Prop } from 'vue-property-decorator'
+import { getResponse } from '@/api/getMusic'
+import Sheet from '@/components/sheet/index.vue'
+import './index.less'
 
 @Component({
-  components: { Sheet },
+  components: { Sheet }
 })
 export default class Selected extends Vue {
-  @Prop() private songSheetUrl!: string;
+  @Prop() private songSheetUrl!: string
 
-  SongSheetList = [];
-  collectionIndex = -1;
+  SongSheetList = []
+  collectionIndex = -1
   handleCollection(item: any, index: any) {
-    this.collectionIndex = index;
+    this.collectionIndex = index
     this.$router.push({
-      name: "page",
-      query: { page: "playList", songSheetId: item.id },
-    });
+      name: 'page',
+      query: { page: 'playList', songSheetId: item.id }
+    })
   }
   mounted() {
-    const getTopList = getResponse;
+    const getTopList = getResponse
     getTopList(this.songSheetUrl).then((result: any) => {
-      this.SongSheetList = result.playlists;
-    });
+      this.SongSheetList = result.playlists
+    })
   }
 }
 </script>

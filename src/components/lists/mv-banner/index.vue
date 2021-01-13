@@ -6,8 +6,8 @@
           class="item-img"
           :style="[
             {
-              background: `url(${item.picUrl}) no-repeat`,
-            },
+              background: `url(${item.picUrl}) no-repeat`
+            }
           ]"
         >
           <div class="item-name">{{ item.name }}-{{ item.artistName }}</div>
@@ -19,12 +19,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import "./index.less";
+import { Component, Vue, Prop } from 'vue-property-decorator'
+import './index.less'
 
 @Component
 export default class MvBanner extends Vue {
-  @Prop() private bannerList!: Array<Object>;
+  @Prop() private bannerList!: Array<Object>
 }
 </script>
 
