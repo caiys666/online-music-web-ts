@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { getBanner, getTest } from '@/api/getMusic.ts'
+import music from '@/api/music.ts'
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import Selected from './selected/index.vue'
 import Rank from './rank/index.vue'
@@ -27,11 +27,11 @@ import './index.less'
   components: { Selected, Rank, SongCategory }
 })
 export default class HomePage extends Vue {
-  list = []
-  bannerList = []
+  list: any = []
+  bannerList: any = []
   songSheetUrl = '/top/playlist'
   currentComponent = Selected
-  categoryList = [
+  categoryList: any = [
     {
       title: '精选',
       selected: true,
@@ -52,14 +52,13 @@ export default class HomePage extends Vue {
     }
   ]
   mounted() {
-    let list = getBanner()
-    list.then((response: any) => {
-      this.list = response
+    music.getBannerList().then(res => {
+      this.list = res.data.banners
     })
   }
   /** 点击切换歌单 */
   handleClickCategory(item: any) {
-    this.categoryList.map(k => {
+    this.categoryList.map((k: any) => {
       k.selected = false
     })
     item.selected = true

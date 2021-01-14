@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-import { getResponse, getArgaResponse, getMusicInfo } from '@/api/getMusic'
+import music from '@/api/music.ts'
 import PlayList from '@/pages/main/content/play-list/index.vue'
 import './index.less'
 import axios from 'axios'
@@ -60,33 +60,27 @@ export default class Sheet extends Vue {
     const songIds: any = []
     const songLists: any = []
     const songLyric: any = []
-    const getTrackIds = getMusicInfo
-    const getSongIds = getMusicInfo
-    const getSongUrl = getMusicInfo
-    const getSongLyric = getMusicInfo
     this.$nextTick(() => {
       /** 获取歌曲trackid */
-      getTrackIds('/cloud/playlist/detail', data).then(res => {
+      music.getTrackIds({ id: item.id }).then(res => {
         trackIds = res.data.playlist.trackIds
         getSongId()
       })
       /** 获取歌曲信息 */
       let getSongId = () => {
         trackIds.map((k: any) => {
-          let songData = { params: { ids: k.id } }
+          let songData = { ids: k.id }
           /** 获取歌曲id */
-          getSongIds('/cloud/song/detail', songData).then(res => {
+          music.getSongIds(songData).then(res => {
             songIds.push(res.data.songs[0])
-            const songUrlData = {
-              params: { id: res.data.songs[0].id }
-            }
+            const songUrlData = { id: res.data.songs[0].id }
             /** 获取歌曲url */
-            getSongUrl('/cloud/song/url', songUrlData).then(res => {
+            music.getSongUrl(songUrlData).then(res => {
               songLists.push(res.data.data[0])
               this.$store.commit('initSongLists', songLists)
             })
             /** 获取歌词信息 */
-            getSongLyric('/cloud/lyric', songUrlData).then(res => {
+            music.getSongLyric(songUrlData).then(res => {
               songLyric.push(res.data.lrc.lyric)
               this.$store.commit('initSongLyric', songLyric)
             })
@@ -112,26 +106,23 @@ export default class Sheet extends Vue {
     }
     if (this.offset < 26) {
       // setInterval(() => {
-      let addSheet = getArgaResponse
-      addSheet(url, data).then((result: any) => {
-        this.SongSheetList.push(...result.playlists)
+      music.getTopPlayList(data).then(res => {
+        this.SongSheetList.push(...res.data.playlists)
         this.offset++
-        console.log(this.SongSheetList)
       })
       // }, 5000);
     }
   }
   @Watch('SheetList', { immediate: true, deep: true })
   getInfo(newValue: any, oldValue: any) {
-    console.log(newValue)
+    // console.log(newValue)
     this.SongSheetList = []
     this.addSheetItem()
   }
   mounted() {
     if (this.songSheetUrl) {
-      const getTopList = getResponse
-      getTopList(this.songSheetUrl).then((result: any) => {
-        this.SongSheetList = result.playlists
+      music.getTopPlayList().then(res => {
+        this.SongSheetList = res.data.playlists
       })
     }
     this.addSheetItem()

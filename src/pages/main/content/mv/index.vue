@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import { getMusicInfo } from '@/api/getMusic'
+import music from '@/api/music.ts'
 import MvBanner from '@/components/lists/mv-banner/index.vue'
 import MvList from '@/components/lists/mv-list/index.vue'
 import './index.less'
@@ -104,11 +104,9 @@ export default class Mv extends Vue {
   // 传递到子组件中的mv数据数组
   mvList: any = []
   mounted() {
-    let getBanner = getMusicInfo
     /** 获取推荐mv进行轮播 */
-    getBanner('/cloud/personalized/mv').then(res => {
+    music.getPersonalizedMv().then(res => {
       this.bannerList = res.data.result
-      console.log(this.bannerList)
     })
     /** 获取默认数据 */
     this.getData()
@@ -123,18 +121,14 @@ export default class Mv extends Vue {
     }
   }
   getData() {
-    let getDefault = getMusicInfo
-    getDefault('/cloud/mv/all', { params: this.dataParams }).then(res => {
+    music.getMvAll(this.dataParams).then(res => {
       this.mvList = res.data.data
     })
   }
   /** 点击搜索按钮进行搜索  搜索的结果只包含视频 */
   handleSearch() {
     this.searchParams.keywords = this.inputValue
-    let getMusicMv = getMusicInfo
-    getMusicMv('/cloud/cloudsearch', {
-      params: this.searchParams
-    }).then(res => {
+    music.getCloudSearch(this.searchParams).then(res => {
       this.mvList = res.data.result.mvs
     })
   }

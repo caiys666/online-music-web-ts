@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import { getArgaResponse } from '@/api/getMusic'
+import music from '@/api/music.ts'
 import axios from 'axios'
 import Sheet from '@/components/sheet/index.vue'
 import './index.less'
@@ -59,8 +59,8 @@ export default class SongCategory extends Vue {
   @Watch('childValue', { immediate: true, deep: true })
   /** 监听当前下拉框选中的数据  进行请求 */
   getValue(newValue: any, oldValue: any) {
-    console.log(newValue)
-    this.getCategorySheetInfo('/top/playlist', newValue)
+    // console.log(newValue)
+    this.getCategorySheetInfo(newValue)
   }
   mounted() {
     this.getSelectCategory()
@@ -92,14 +92,12 @@ export default class SongCategory extends Vue {
     console.log(this.selectChildCategory)
   }
   /** 获取对应下拉选中数据的歌单信息 */
-  getCategorySheetInfo(url: any, value: any) {
-    let sheetData = getArgaResponse
+  getCategorySheetInfo(value: any) {
     let data = {
       cat: value
     }
-    sheetData(url, data).then((result: any) => {
-      console.log(result)
-      this.sheetList = result.playlists
+    music.getTopPlayList(data).then(res => {
+      this.sheetList = res.data.playlists
     })
   }
   /** 下拉进行切换childCategory */

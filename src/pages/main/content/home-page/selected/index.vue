@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { getResponse } from '@/api/getMusic'
+import music from '@/api/music.ts'
 import Sheet from '@/components/sheet/index.vue'
 import './index.less'
 
@@ -28,9 +28,8 @@ export default class Selected extends Vue {
     })
   }
   mounted() {
-    const getTopList = getResponse
-    getTopList(this.songSheetUrl).then((result: any) => {
-      this.SongSheetList = result.playlists
+    music.getTopPlayList().then(res => {
+      this.SongSheetList = res.data.playlists
     })
   }
 }
