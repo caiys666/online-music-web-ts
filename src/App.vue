@@ -8,6 +8,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import Axios from 'axios'
+import { createApi } from 'unsplash-js'
 
 @Component({})
 export default class App extends Vue {
@@ -19,6 +20,27 @@ export default class App extends Vue {
       .catch(err => {
         console.log(err)
       })
+  }
+  mounted() {
+    const browserApi = createApi({
+      apiUrl: 'https://mywebsite.com/unsplash-proxy'
+      //...other fetch options
+    })
+    const unsplash = createApi({
+      accessKey: 'iJ5qGrnu2z_8MZbwfhZ3ia94eA2GF4TouhAP564Is18'
+    })
+
+    // non-feed example
+    // browserApi.photos.get({ photoId: 'foo' }).then(result => {
+    //   if (result.errors) {
+    //     // handle error here
+    //     console.log('error occurred: ', result.errors[0])
+    //   } else {
+    //     // handle success here
+    //     const photo = result.response
+    //     console.log(photo)
+    //   }
+    // })
   }
 }
 </script>
