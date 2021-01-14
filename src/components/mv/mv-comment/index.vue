@@ -21,27 +21,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import { getMusicInfo } from "@/api/getMusic";
-import CommentItem from "./comment-item/index.vue";
-import "./index.less";
+import { Component, Vue, Prop } from 'vue-property-decorator'
+import music from '@/api/music.ts'
+import CommentItem from './comment-item/index.vue'
+import './index.less'
 
 @Component({
-  components: { CommentItem },
+  components: { CommentItem }
 })
 export default class MvComment extends Vue {
-  @Prop() private mvid!: any;
+  @Prop() private mvid!: any
 
   // 评论列表
-  commentList: any = [];
+  commentList: any = []
   /** 进行请求评论数据 */
   mounted() {
-    getMusicInfo("/cloud/comment/mv", { params: { id: this.mvid } }).then(
-      (res) => {
-        console.log(res.data);
-        this.commentList = res.data;
-      }
-    );
+    // 获取mv评论列表
+    music.getMvComment({ id: this.mvid }).then(res => {
+      this.commentList = res.data
+    })
   }
 }
 </script>

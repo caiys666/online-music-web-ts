@@ -27,8 +27,8 @@
               class="mvimg"
               :style="[
                 {
-                  background: `url(${item.cover})`,
-                },
+                  background: `url(${item.cover})`
+                }
               ]"
               @click="handleGoDetail(item)"
             >
@@ -67,44 +67,44 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import "./index.less";
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import './index.less'
 
 @Component
 export default class MvList extends Vue {
-  @Prop() private mvList!: Array<Object>;
-  @Watch("mvList", { immediate: true, deep: true })
+  @Prop() private mvList!: Array<Object>
+  @Watch('mvList', { immediate: true, deep: true })
   getMvList(newValue: any) {
-    console.log(newValue);
-    this.mvList = newValue;
+    console.log(newValue)
+    this.mvList = newValue
   }
   // 选择网格布局还是线性布局标志
-  isGrid: boolean = true;
+  isGrid: boolean = true
   // 刷新标志
-  fullscreenLoading: boolean = true;
-  srcUrl = require("../../../assets/images/dilireba@2x.jpg");
+  fullscreenLoading: boolean = true
+  srcUrl = require('../../../assets/images/dilireba@2x.jpg')
   /** 进行切换布局  1代表网格布局  0代表线性布局 */
   handleSwitch(index: number) {
     if (index === 1) {
-      this.isGrid = true;
+      this.isGrid = true
     } else if (index === 0) {
-      this.isGrid = false;
+      this.isGrid = false
     }
   }
   mounted() {
     if (this.mvList) {
-      this.fullscreenLoading = false;
+      this.fullscreenLoading = false
     }
   }
   /** 点击图片进入mv详情页面 */
   handleGoDetail(item: any) {
     let routeUrl = this.$router.resolve({
-      name: "MvDetail",
+      name: 'MvDetail',
       query: {
-        id: item.id,
-      },
-    });
-    window.open(routeUrl.href, "_blank");
+        id: item.id
+      }
+    })
+    window.open(routeUrl.href, '_blank')
   }
 }
 </script>

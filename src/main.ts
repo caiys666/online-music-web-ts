@@ -11,12 +11,14 @@ import "element-ui/lib/theme-chalk/index.css";
 import "ant-design-vue/dist/antd.css";
 import "swiper/swiper.scss";
 import "./assets/iconfont/iconfont.css";
+import Mock from '@/mock'
 
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
 Vue.use(VueAwesomeSwiper);
 Vue.use(Element);
 Vue.use(Antd);
+Vue.use(Mock)
 Vue.prototype.$EventBus = new Vue();
 
 new Vue({

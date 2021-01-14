@@ -3,8 +3,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import "./index.less";
+import { Component, Vue } from 'vue-property-decorator'
+import './index.less'
 
 @Component
 export default class MyFavorite extends Vue {}

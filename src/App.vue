@@ -6,10 +6,21 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from 'vue-property-decorator'
+import Axios from 'axios'
 
 @Component({})
-export default class App extends Vue {}
+export default class App extends Vue {
+  created() {
+    Axios.post('/api/test')
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+}
 </script>
 
 <style lang="less">

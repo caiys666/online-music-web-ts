@@ -33,79 +33,79 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { getMusicInfo } from "@/api/getMusic";
-import MvVideo from "@/components/mv/mv-video/index.vue";
-import MvComment from "@/components/mv/mv-comment/index.vue";
+import { Component, Vue } from 'vue-property-decorator'
+import music from '@/api/music.ts'
+import MvVideo from '@/components/mv/mv-video/index.vue'
+import MvComment from '@/components/mv/mv-comment/index.vue'
 
-import "./index.less";
+import './index.less'
 
 @Component({
-  components: { MvVideo, MvComment },
+  components: { MvVideo, MvComment }
 })
 export default class MvDetail extends Vue {
-  mvid: any = "";
+  mvid: any = ''
   // 对应mvid的信息数组
-  mvItem: any = "";
+  mvItem: any = ''
   // 当前mv
-  currentMv: any = "";
+  currentMv: any = ''
   // 点赞\分享等数组列表
   praiseList: any = [
-    { title: "点赞", icon: "icondianzan", content: "" },
-    { title: "打赏", icon: "icondashang", content: "" },
-    { title: "收藏", icon: "iconcollection-b", content: "" },
-    { title: "转发", icon: "iconzhuanfa", content: "" },
-    { title: "不看好", icon: "icondislike-b", content: "" },
-  ];
+    { title: '点赞', icon: 'icondianzan', content: '' },
+    { title: '打赏', icon: 'icondashang', content: '' },
+    { title: '收藏', icon: 'iconcollection-b', content: '' },
+    { title: '转发', icon: 'iconzhuanfa', content: '' },
+    { title: '不看好', icon: 'icondislike-b', content: '' }
+  ]
   // 获取mv地址参数对象
   mvUrlParams: any = {
-    id: "",
-    r: 1080,
-  };
+    id: '',
+    r: 1080
+  }
   created() {
     /** 获取跳转页面传过来的mvid */
-    this.mvid = this.$route.query.id;
-    this.getInfoById(this.mvid);
-    this.getUrlById(this.mvid);
+    this.mvid = this.$route.query.id
+    this.getInfoById(this.mvid)
+    this.getUrlById(this.mvid)
   }
 
   /** 根据mvid进行请求mv信息详细数据 */
   getInfoById(id: any) {
-    getMusicInfo("/cloud/mv/detail", { params: { mvid: id } }).then((res) => {
-      this.mvItem = res.data.data;
+    music.getMvDetail({ mvid: id }).then(res => {
+      this.mvItem = res.data.data
       this.praiseList.forEach((k: any) => {
         switch (k.title) {
-          case "点赞": {
-            k.content = this.mvItem.subCount;
-            break;
+          case '点赞': {
+            k.content = this.mvItem.subCount
+            break
           }
-          case "打赏": {
-            k.content = this.mvItem.subCount;
-            break;
+          case '打赏': {
+            k.content = this.mvItem.subCount
+            break
           }
-          case "收藏": {
-            k.content = this.mvItem.subCount;
-            break;
+          case '收藏': {
+            k.content = this.mvItem.subCount
+            break
           }
-          case "转发": {
-            k.content = this.mvItem.shareCount;
-            break;
+          case '转发': {
+            k.content = this.mvItem.shareCount
+            break
           }
-          case "不看好": {
-            k.content = this.mvItem.commentCount;
-            break;
+          case '不看好': {
+            k.content = this.mvItem.commentCount
+            break
           }
         }
-      });
-      console.log(this.praiseList);
-    });
+      })
+      // console.log(this.praiseList)
+    })
   }
   /** 获取mv地址 */
   getUrlById(id: any) {
-    this.mvUrlParams.id = id;
-    getMusicInfo("/cloud/mv/url", { params: this.mvUrlParams }).then((res) => {
-      this.currentMv = res.data.data;
-    });
+    this.mvUrlParams.id = id
+    music.getMvUrl(this.mvUrlParams).then(res => {
+      this.currentMv = res.data.data
+    })
   }
 }
 </script>
