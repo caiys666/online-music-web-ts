@@ -10,12 +10,13 @@
         v-for="(sitem, sindex) in item.item"
         :key="sindex"
         class="button"
-        :class="{
-          actived: currentNavIndex === index && currentItemIndex === sindex
-        }"
+        :class="[
+          currentNavIndex === index && currentItemIndex === sindex
+            ? 'actived'
+            : ''
+        ]"
         plain
         :icon="sitem.icon"
-        autofocus
         @click="handleCheckPage(sitem.component, index, sindex)"
         >{{ sitem.title }}</el-button
       >
@@ -109,6 +110,10 @@ export default class Nav extends Vue {
   setCurrentIndex(newValue: any) {
     this.currentNavIndex = newValue.currentNavIndex
     this.currentItemIndex = newValue.currentItemIndex
+  }
+
+  mounted() {
+    this.handleCheckPage(HomePage, 0, 0)
   }
 
   /**
