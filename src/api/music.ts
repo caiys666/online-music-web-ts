@@ -29,6 +29,15 @@ const getMvAll = (data?: any) => get(`${basePath}/mv/all`, data)
 // mv视频搜索
 const getCloudSearch = (data?: any) => get(`${basePath}cloudsearch`, data)
 
+// 获取mv地址
+const getMvUrl = (data?: any) => get(`${basePath}mv/url`, data)
+
+// 根据mvid进行请求mv信息详细数据
+const getMvDetail = (data?: any) => get(`${basePath}mv/detail`, data)
+
+// 获取mv评论列表
+const getMvComment = (data?: any) => get(`${basePath}comment/mv`, data)
+
 export default {
   getBannerList,
   getPersonalizedMv,
@@ -38,5 +47,8 @@ export default {
   getSongIds,
   getSongUrl,
   getSongLyric,
-  getTopPlayList
+  getTopPlayList,
+  getMvComment,
+  getMvUrl,
+  getMvDetail
 }

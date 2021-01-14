@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { getMusicInfo } from '@/api/getMusic'
+import music from '@/api/music.ts'
 import MvVideo from '@/components/mv/mv-video/index.vue'
 import MvComment from '@/components/mv/mv-comment/index.vue'
 
@@ -71,7 +71,7 @@ export default class MvDetail extends Vue {
 
   /** 根据mvid进行请求mv信息详细数据 */
   getInfoById(id: any) {
-    getMusicInfo('/cloud/mv/detail', { params: { mvid: id } }).then(res => {
+    music.getMvDetail({ mvid: id }).then(res => {
       this.mvItem = res.data.data
       this.praiseList.forEach((k: any) => {
         switch (k.title) {
@@ -97,13 +97,13 @@ export default class MvDetail extends Vue {
           }
         }
       })
-      console.log(this.praiseList)
+      // console.log(this.praiseList)
     })
   }
   /** 获取mv地址 */
   getUrlById(id: any) {
     this.mvUrlParams.id = id
-    getMusicInfo('/cloud/mv/url', { params: this.mvUrlParams }).then(res => {
+    music.getMvUrl(this.mvUrlParams).then(res => {
       this.currentMv = res.data.data
     })
   }

@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { getMusicInfo } from '@/api/getMusic'
+import music from '@/api/music.ts'
 import CommentItem from './comment-item/index.vue'
 import './index.less'
 
@@ -36,12 +36,10 @@ export default class MvComment extends Vue {
   commentList: any = []
   /** 进行请求评论数据 */
   mounted() {
-    getMusicInfo('/cloud/comment/mv', { params: { id: this.mvid } }).then(
-      res => {
-        console.log(res.data)
-        this.commentList = res.data
-      }
-    )
+    // 获取mv评论列表
+    music.getMvComment({ id: this.mvid }).then(res => {
+      this.commentList = res.data
+    })
   }
 }
 </script>
