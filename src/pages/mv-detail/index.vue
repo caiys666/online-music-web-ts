@@ -27,6 +27,7 @@
         </div>
       </div>
       <MvComment :mvid="mvid" />
+      <video-player :options="playerOptions" />
     </div>
     <div class="mv-detail__right"></div>
   </div>
@@ -61,6 +62,21 @@ export default class MvDetail extends Vue {
   mvUrlParams: any = {
     id: '',
     r: 1080
+  }
+
+  playerOptions = {
+    // videojs options
+    muted: true,
+    language: 'en',
+    playbackRates: [0.7, 1.0, 1.5, 2.0],
+    sources: [
+      {
+        type: 'video/mp4',
+        src:
+          'https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm'
+      }
+    ],
+    poster: '/static/images/author.jpg'
   }
   created() {
     /** 获取跳转页面传过来的mvid */

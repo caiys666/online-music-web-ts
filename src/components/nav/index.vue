@@ -120,8 +120,8 @@ export default class Nav extends Vue {
    * @return {*}
    * @note:
    * @param {any} component 当前选中的组件
-   * @param {number} index
-   * @param {number} sindex
+   * @param {number} index 二维数组的x值
+   * @param {number} sindex 二维数组的y值
    */
   handleCheckPage(component: any, index: number, sindex: number) {
     console.log(index + ':' + sindex)
