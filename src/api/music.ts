@@ -26,6 +26,9 @@ const getPersonalizedMv = (data?: any) =>
 // 获取所有mv
 const getMvAll = (data?: any) => get(`${basePath}/mv/all`, data)
 
+// 获取相似mv
+const getSimpleMv = (data?: any) => get(`${basePath}simi/mv`, data)
+
 // mv视频搜索
 const getCloudSearch = (data?: any) => get(`${basePath}cloudsearch`, data)
 
@@ -50,5 +53,6 @@ export default {
   getTopPlayList,
   getMvComment,
   getMvUrl,
-  getMvDetail
+  getMvDetail,
+  getSimpleMv
 }

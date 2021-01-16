@@ -1,0 +1,28 @@
+.user{
+    width: 100%;
+    &__item{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 10px;
+        &__img{
+            width:3vw;
+            height: 3vw;
+            border-radius: 50px;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            background-size: contain !important;
+        }
+        &__info{
+            flex: 1;
+            text-align: left;
+            margin-left: 20px;
+            .more{
+                cursor: pointer;
+            }
+            .more:hover{
+                color: #003aff;
+            }
+        }
+    }
+}

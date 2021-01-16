@@ -15,7 +15,17 @@
           </div>
         </div>
       </div>
-      <MvVideo :currentMv="currentMv" :mvItem="mvItem" />
+      <!-- <MvVideo :currentMv="currentMv" :mvItem="mvItem" /> -->
+      <div style="width:60vw">
+        <video
+          ref="mvVideo"
+          :src="currentMv.url"
+          :poster="mvItem.cover"
+          muted
+          controls
+          style="width:100%"
+        ></video>
+      </div>
       <div class="mv-praise">
         <div
           class="mv-praise__item"
@@ -27,22 +37,26 @@
         </div>
       </div>
       <MvComment :mvid="mvid" />
-      <video-player :options="playerOptions" />
     </div>
-    <div class="mv-detail__right"></div>
+    <div class="mv-detail__right">
+      <MvUser :artists="artists" />
+      <SimpleMvList :mvid="mvid" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import music from '@/api/music.ts'
 import MvVideo from '@/components/mv/mv-video/index.vue'
 import MvComment from '@/components/mv/mv-comment/index.vue'
+import MvUser from '@/components/mv/mv-user/index.vue'
+import SimpleMvList from '@/components/mv/simple-mv-list/index.vue'
 
 import './index.less'
 
 @Component({
-  components: { MvVideo, MvComment }
+  components: { MvVideo, MvComment, MvUser, SimpleMvList }
 })
 export default class MvDetail extends Vue {
   mvid: any = ''
@@ -50,6 +64,7 @@ export default class MvDetail extends Vue {
   mvItem: any = ''
   // 当前mv
   currentMv: any = ''
+  artists: any = []
   // 点赞\分享等数组列表
   praiseList: any = [
     { title: '点赞', icon: 'icondianzan', content: '' },
@@ -78,7 +93,8 @@ export default class MvDetail extends Vue {
     ],
     poster: '/static/images/author.jpg'
   }
-  created() {
+  @Watch('$route.query.id', { immediate: true, deep: true })
+  getMvid(newValue: any) {
     /** 获取跳转页面传过来的mvid */
     this.mvid = this.$route.query.id
     this.getInfoById(this.mvid)
@@ -88,7 +104,9 @@ export default class MvDetail extends Vue {
   /** 根据mvid进行请求mv信息详细数据 */
   getInfoById(id: any) {
     music.getMvDetail({ mvid: id }).then(res => {
-      this.mvItem = res.data.data
+      const mvItem = res.data.data
+      this.$set(this, 'mvItem', mvItem)
+      this.artists = this.mvItem.artists
       this.praiseList.forEach((k: any) => {
         switch (k.title) {
           case '点赞': {

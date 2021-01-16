@@ -1,11 +1,11 @@
 <template>
   <div class="comment-item">
     <div class="comment-item__user">
-      <img src="../../../../assets/images/dilireba@2x.jpg" alt="" />
+      <img :src="commentItem.user.avatarUrl" alt="" />
     </div>
     <div class="comment-item__comment">
-      <div class="uname">cabbage</div>
-      <div class="content">1</div>
+      <div class="uname">{{ commentItem.user.nickname }}</div>
+      <div class="content">{{ commentItem.content }}</div>
     </div>
   </div>
 </template>
