@@ -44,6 +44,12 @@ const getMvComment = (data?: any) => get(`${basePath}comment/mv`, data)
 // 获取排行榜详情
 const getRankListDetail = (data?: any) => get(`${basePath}toplist/detail`, data)
 
+// 搜索
+const handleSearch = (data?: any) => get(`${basePath}cloudsearch`, data)
+
+// 热门搜索
+const getHotSearch = (data?: any) => get(`${basePath}search/hot`, data)
+
 export default {
   getBannerList,
   getPersonalizedMv,
@@ -58,5 +64,7 @@ export default {
   getMvUrl,
   getMvDetail,
   getSimpleMv,
-  getRankListDetail
+  getRankListDetail,
+  handleSearch,
+  getHotSearch
 }
