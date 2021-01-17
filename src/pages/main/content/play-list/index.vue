@@ -64,11 +64,17 @@ export default class PlayList extends Vue {
   @Watch('$store.state.songIds', { immediate: true, deep: true })
   getSongIds(newValue: any) {
     this.songIds = newValue
-    this.currentSongInfo.picture = this.songIds[0].al.picUrl
-    this.currentSongInfo.sname = this.songIds[0].name
-    this.currentSongInfo.author = ''
-    this.songIds[0].ar.forEach((k: any) => {
-      this.currentSongInfo.author += k.name
+    this.songIds.forEach((k: any) => {
+      if (typeof k === 'object') {
+        if (this.songIds[0].al) {
+          this.currentSongInfo.picture = this.songIds[0].al.picUrl
+        }
+        this.currentSongInfo.sname = this.songIds[0].name
+        this.currentSongInfo.author = ''
+        this.songIds[0].ar.forEach((k: any) => {
+          this.currentSongInfo.author += k.name
+        })
+      }
     })
   }
   /** 监听歌词数组的变化啊 */
@@ -77,7 +83,12 @@ export default class PlayList extends Vue {
     this.songLyric = newValue
     this.currentSongInfo.lyric = this.songLyric[0]
   }
-  /** 点击切换歌曲 更改当前歌曲信息 */
+  /**
+   * @note: 点击切换歌曲 更改当前歌曲信息
+   * @return {*}
+   * @param {any} item
+   * @param {number} index
+   */
   handleSwichSong(item: any, index: number) {
     this.currentIndex = index
     this.currentSongInfo.picture = item.al.picUrl
@@ -88,7 +99,10 @@ export default class PlayList extends Vue {
     })
     this.currentSongInfo.lyric = this.songLyric[index]
   }
-  /** 获取vuex中歌曲相关数据的初始值 */
+  /**
+   * @note: 获取vuex中歌曲相关数据的初始值
+   * @return {*}
+   */
   created() {
     const songIds = this.$store.state.songIds
     const songLists = this.$store.state.songLists
