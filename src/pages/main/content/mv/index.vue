@@ -152,7 +152,6 @@ export default class Mv extends Vue {
         this.dataParams.order = sitem.desc
       }
     }
-    console.log(this.dataParams)
     this.getData()
   }
 }
