@@ -41,6 +41,9 @@ const getMvDetail = (data?: any) => get(`${basePath}mv/detail`, data)
 // 获取mv评论列表
 const getMvComment = (data?: any) => get(`${basePath}comment/mv`, data)
 
+// 获取排行榜详情
+const getRankListDetail = (data?: any) => get(`${basePath}toplist/detail`, data)
+
 export default {
   getBannerList,
   getPersonalizedMv,
@@ -54,5 +57,6 @@ export default {
   getMvComment,
   getMvUrl,
   getMvDetail,
-  getSimpleMv
+  getSimpleMv,
+  getRankListDetail
 }
