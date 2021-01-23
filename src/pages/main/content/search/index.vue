@@ -116,6 +116,8 @@ export default class Search extends Vue {
   albumList: any = []
   // 歌单数组
   SheetList: any = []
+  // 电台数组
+  djRadios: any = []
   // 搜索需要的参数
   searchParams = {
     keywords: '',
@@ -245,9 +247,14 @@ export default class Search extends Vue {
           break
         }
         case '1000': {
-          console.log(res.data.result.playlists)
           this.SheetList = res.data.result.playlists
           break
+        }
+        case '1009': {
+          // console.log(res.data)
+          this.djRadios = res.data.result.djRadios
+          this.$store.commit('initDjRadios', this.djRadios)
+          console.log(this.$store.state.djRadios)
         }
       }
     })
