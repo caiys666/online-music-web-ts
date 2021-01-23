@@ -50,6 +50,9 @@ const handleSearch = (data?: any) => get(`${basePath}cloudsearch`, data)
 // 热门搜索
 const getHotSearch = (data?: any) => get(`${basePath}search/hot`, data)
 
+// 获取专辑歌曲
+const handleGetAlbum = (data?: any) => get(`${basePath}album`, data)
+
 export default {
   getBannerList,
   getPersonalizedMv,
@@ -66,5 +69,6 @@ export default {
   getSimpleMv,
   getRankListDetail,
   handleSearch,
-  getHotSearch
+  getHotSearch,
+  handleGetAlbum
 }

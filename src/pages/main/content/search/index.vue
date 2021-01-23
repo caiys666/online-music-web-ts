@@ -2,7 +2,23 @@
   <div class="search">
     <h2 style="margin-left:20px">搜索</h2>
     <div class="search__input">
+      <el-select
+        @change="handleSelect"
+        v-model="value"
+        clearable
+        placeholder="请选择"
+      >
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+          :disabled="item.disabled"
+        >
+        </el-option>
+      </el-select>
       <el-input
+        class="search__input__submit"
         placeholder="请输入内容"
         @change="handleSearch('')"
         @focus="getHistoryList"
@@ -41,6 +57,25 @@
         </div>
       </div>
     </div>
+    <div class="search__album">
+      <h2 style="margin:1vw 0 0 0" class="search__album__title">专辑</h2>
+      <div class="search__album__list">
+        <div class="item" v-for="(item, index) in albumList" :key="index">
+          <div class="item__img">
+            <img :src="item.picUrl" alt="" @click="handleGetAlbums(item)" />
+          </div>
+          <div
+            class="item__author desc"
+            v-for="(aitem, aindex) in item.artists"
+            :key="aindex"
+          >
+            {{ aitem.name }}
+          </div>
+          <div class="item__album desc">{{ item.type }}:{{ item.name }}</div>
+        </div>
+      </div>
+      <Album />
+    </div>
   </div>
 </template>
 
@@ -49,10 +84,11 @@ import { Component, Vue } from 'vue-property-decorator'
 import { Message } from 'element-ui'
 import music from '@/api/music'
 import PlayList from '@/pages/main/content/play-list/index.vue'
+import Album from '@/components/lists/album/index.vue'
 import './index.less'
 
 @Component({
-  components: { PlayList }
+  components: { PlayList, Album }
 })
 export default class Search extends Vue {
   // 输入框内容
@@ -69,6 +105,61 @@ export default class Search extends Vue {
   historyList: any = []
   // 热门搜索数组
   hotSearchList: any = []
+  // 筛选的当前参数
+  selectValue: any = ''
+  // 专辑数组
+  albumList: any = []
+  // 搜索需要的参数
+  searchParams = {
+    keywords: '',
+    limit: 100,
+    offset: 0,
+    type: '1'
+  }
+  options = [
+    {
+      value: '1',
+      label: '单曲',
+      disabled: false
+    },
+    {
+      value: '10',
+      label: '专辑'
+    },
+    {
+      value: '100',
+      label: '歌手'
+    },
+    {
+      value: '1000',
+      label: '歌单'
+    },
+    {
+      value: '1002',
+      label: '用户'
+    },
+    {
+      value: '1004',
+      label: 'MV'
+    },
+    {
+      value: '1006',
+      label: '歌词'
+    },
+    {
+      value: '1009',
+      label: '电台'
+    },
+    {
+      value: '1014',
+      label: '视频'
+    },
+    {
+      value: '1018',
+      label: '综合'
+    }
+  ]
+  value = ''
   mounted() {
     this.getHistoryList()
     this.getHotSearch()
@@ -103,9 +194,13 @@ export default class Search extends Vue {
   setHistoryList(historyList: any) {
     localStorage.setItem('historyList', JSON.stringify(historyList))
   }
+  /**
+   * @note: 获取热门搜索
+   * @return {*}
+   */
   getHotSearch() {
     music.getHotSearch().then(res => {
-      console.log(res.data)
+      // console.log(res.data)
       this.hotSearchList = res.data.result.hots
     })
   }
@@ -117,21 +212,52 @@ export default class Search extends Vue {
     this.songIds = []
     this.songLists = []
     this.songLyric = []
-    let params = {}
     if (text === '') {
-      params = { keywords: this.searchText }
+      this.searchParams.keywords = this.searchText
     } else {
-      params = { keywords: text }
+      this.searchParams.keywords = text
+      this.searchText = text
     }
-    music.handleSearch(params).then(res => {
-      this.searchResult = res.data.result.songs
-      // this.songIds = res.data.result.songs
-      this.$store.commit('initSongIds', res.data.result.songs)
-      this.getSongUrl()
+    music.handleSearch(this.searchParams).then(res => {
+      // console.log(res.data)
+      switch (this.searchParams.type) {
+        case '1': {
+          this.searchResult = res.data.result.songs
+          this.$store.commit('initSongIds', res.data.result.songs)
+          this.getSongUrl()
+          this.$store.commit('initSongLists', this.songLists)
+          this.$store.commit('initSongLyric', this.songLyric)
+          this.handleSwitchComponent()
+          break
+        }
+        case '10': {
+          this.albumList = res.data.result.albums
+        }
+      }
     })
-    this.getHistoryList()
-    this.$store.commit('initSongLists', this.songLists)
-    this.$store.commit('initSongLyric', this.songLyric)
+    if (this.searchParams.type === '1') {
+      this.getHistoryList()
+    }
+  }
+  /**
+   * @note: 获取专辑歌曲
+   * @return {*}
+   * @param {any} item
+   */
+  handleGetAlbums(item: any) {
+    music.handleGetAlbum({ id: item.id }).then(res => {
+      console.log(res.data)
+      this.searchResult = res.data.songs
+      this.$store.commit('initSongIds', res.data.songs)
+      this.getSongUrl()
+      this.handleSwitchComponent()
+    })
+  }
+  /**
+   * @note: 进行页面切换
+   * @return {*}
+   */
+  handleSwitchComponent() {
     let currentIndex: number = Math.random()
     this.$store.commit('setCurrentComponent', {
       currentIndex: currentIndex,
@@ -148,7 +274,7 @@ export default class Search extends Vue {
     this.searchResult.forEach((k: any) => {
       const params = { id: k.id }
       music.getSongUrl(params).then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         this.songLists.push(res.data.data[0])
       })
       this.getSongLyric(params)
@@ -167,6 +293,15 @@ export default class Search extends Vue {
         this.songLyric.push(res.data.lrc.lyric)
       }
     })
+  }
+  /**
+   * @note: 下拉选择
+   * @return {*}
+   * @param {any} value
+   */
+  handleSelect(value: any) {
+    // alert(value)
+    this.searchParams.type = value
   }
 }
 </script>
