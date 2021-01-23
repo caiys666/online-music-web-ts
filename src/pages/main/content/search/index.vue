@@ -57,24 +57,28 @@
         </div>
       </div>
     </div>
-    <div class="search__album">
+    <div v-if="searchParams.type === '10'" class="search__album">
       <h2 style="margin:1vw 0 0 0" class="search__album__title">专辑</h2>
       <div class="search__album__list">
         <div class="item" v-for="(item, index) in albumList" :key="index">
           <div class="item__img">
             <img :src="item.picUrl" alt="" @click="handleGetAlbums(item)" />
           </div>
-          <div
-            class="item__author desc"
-            v-for="(aitem, aindex) in item.artists"
-            :key="aindex"
-          >
-            {{ aitem.name }}
+          <div class="item__author desc">
+            <div v-for="(aitem, aindex) in item.artists" :key="aindex">
+              <span style="margin-right:1vw" v-if="aitem.name">{{
+                aitem.name
+              }}</span>
+            </div>
           </div>
           <div class="item__album desc">{{ item.type }}:{{ item.name }}</div>
         </div>
       </div>
       <Album />
+    </div>
+    <div v-if="searchParams.type === '1000'">
+      <h2 style="margin-left:2vw">歌单</h2>
+      <Sheet :SheetList="SheetList" />
     </div>
   </div>
 </template>
@@ -84,11 +88,12 @@ import { Component, Vue } from 'vue-property-decorator'
 import { Message } from 'element-ui'
 import music from '@/api/music'
 import PlayList from '@/pages/main/content/play-list/index.vue'
-import Album from '@/components/lists/album/index.vue'
+import Sheet from '@/components/lists/sheet/index.vue'
+// import Sheet from '@/components/sheet/index.vue'
 import './index.less'
 
 @Component({
-  components: { PlayList, Album }
+  components: { PlayList, Sheet }
 })
 export default class Search extends Vue {
   // 输入框内容
@@ -109,6 +114,8 @@ export default class Search extends Vue {
   selectValue: any = ''
   // 专辑数组
   albumList: any = []
+  // 歌单数组
+  SheetList: any = []
   // 搜索需要的参数
   searchParams = {
     keywords: '',
@@ -232,6 +239,15 @@ export default class Search extends Vue {
         }
         case '10': {
           this.albumList = res.data.result.albums
+          break
+        }
+        case '100': {
+          break
+        }
+        case '1000': {
+          console.log(res.data.result.playlists)
+          this.SheetList = res.data.result.playlists
+          break
         }
       }
     })
