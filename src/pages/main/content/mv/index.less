@@ -1,7 +1,8 @@
 .mv {
   width: 100%;
+  min-height: 100vh;
   font-size: 0.8vw;
-  background-color: white;
+
   &__search {
     display: flex;
     justify-content: center;
@@ -9,31 +10,37 @@
     margin: 0 auto;
     margin-top: 1vw;
     padding-bottom: 4vw;
+
     &__logo {
       width: auto;
       height: 40px;
       margin-right: 20px;
     }
+
     .el-input {
       height: 40px;
       width: 30%;
       margin-right: 20px;
+
       .el-input__inner {
         line-height: 40px;
       }
     }
   }
+
   &__sort {
     width: 80%;
     margin: 0 auto;
     text-align: left;
     padding-bottom: 20px;
     border-bottom: 1px solid #00a1d6;
+
     .item {
       display: flex;
       align-items: center;
       height: 30px;
       margin: 0.5vw 0;
+
       .title {
         padding: 0px 1vw;
         border-radius: 5px;
@@ -41,16 +48,19 @@
         color: white;
         background-color: #00a1d6;
       }
+
       .option {
         margin: 0 20px;
         padding: 0 0.5vw;
         cursor: pointer;
         border-radius: 5px;
       }
+
       .actived {
         color: white;
         background-color: #00a1d6;
       }
+
       .option:hover {
         color: white;
         background-color: #00a1d6;

@@ -82,7 +82,6 @@ export default class MvList extends Vue {
   isGrid: boolean = true
   // 刷新标志
   fullscreenLoading: boolean = true
-  srcUrl = require('../../../assets/images/dilireba@2x.jpg')
   /** 进行切换布局  1代表网格布局  0代表线性布局 */
   handleSwitch(index: number) {
     if (index === 1) {

@@ -1,6 +1,7 @@
 .selected {
   width: 100%;
   font-size: 0.8vw;
+
   &__container {
     display: flex;
     flex-wrap: wrap;
@@ -8,6 +9,7 @@
     align-items: center;
     width: 100%;
     height: auto;
+
     &__item {
       display: flex;
       flex-direction: column;
@@ -15,16 +17,24 @@
       align-items: center;
       width: 20%;
       height: 11vw;
+
       .item-img {
         display: flex;
         justify-content: center;
         width: 100%;
         height: 10vw !important;
+
         &__collect {
           position: relative;
+
           .collectioned {
             color: pink;
           }
+
+          .iconfont {
+            font-size: 1vw;
+          }
+
           &__collection {
             position: absolute;
             right: 10px;
@@ -32,8 +42,10 @@
             color: rgb(248, 248, 248);
             cursor: pointer;
           }
-          &__collection:hover + .img {
+
+          &__collection:hover+.img {
             transform: scale(1.05);
+            border-radius: 10px;
           }
 
           img {
@@ -43,11 +55,14 @@
             cursor: pointer;
             transition: all 0.5s;
           }
+
           img:hover {
             transform: scale(1.05);
+            border-radius: 10px;
           }
         }
       }
+
       .item-name {
         width: 10vw !important;
         height: 2.5vw;

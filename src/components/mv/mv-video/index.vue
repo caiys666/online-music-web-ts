@@ -13,6 +13,7 @@
           :src="currentMv.url"
           :poster="mvItem.cover"
           muted
+          controls
           @click="handleChangeVideo"
           @mousemove="handleChangeStyle"
         ></video>

@@ -1,0 +1,34 @@
+.rank {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    text-align: left;
+
+    &__title {
+        margin-left: 2vw;
+    }
+
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+
+        &__item {
+            width: 20%;
+            height: auto;
+            padding: 0.8vw;
+
+            .bgimg {
+                width: 100%;
+                border-radius: 0.5vw;
+                cursor: pointer;
+                transition: all 0.5s;
+            }
+
+            .bgimg:hover {
+                transform: scale(1.05);
+            }
+        }
+    }
+}

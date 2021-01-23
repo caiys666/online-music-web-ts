@@ -26,6 +26,9 @@ const getPersonalizedMv = (data?: any) =>
 // 获取所有mv
 const getMvAll = (data?: any) => get(`${basePath}/mv/all`, data)
 
+// 获取相似mv
+const getSimpleMv = (data?: any) => get(`${basePath}simi/mv`, data)
+
 // mv视频搜索
 const getCloudSearch = (data?: any) => get(`${basePath}cloudsearch`, data)
 
@@ -37,6 +40,18 @@ const getMvDetail = (data?: any) => get(`${basePath}mv/detail`, data)
 
 // 获取mv评论列表
 const getMvComment = (data?: any) => get(`${basePath}comment/mv`, data)
+
+// 获取排行榜详情
+const getRankListDetail = (data?: any) => get(`${basePath}toplist/detail`, data)
+
+// 搜索
+const handleSearch = (data?: any) => get(`${basePath}cloudsearch`, data)
+
+// 热门搜索
+const getHotSearch = (data?: any) => get(`${basePath}search/hot`, data)
+
+// 获取专辑歌曲
+const handleGetAlbum = (data?: any) => get(`${basePath}album`, data)
 
 export default {
   getBannerList,
@@ -50,5 +65,10 @@ export default {
   getTopPlayList,
   getMvComment,
   getMvUrl,
-  getMvDetail
+  getMvDetail,
+  getSimpleMv,
+  getRankListDetail,
+  handleSearch,
+  getHotSearch,
+  handleGetAlbum
 }

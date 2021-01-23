@@ -17,6 +17,13 @@
     <div v-for="(item, index) in commentList.hotComments" :key="index">
       <CommentItem :commentItem="item" />
     </div>
+    <div>评论</div>
+    <div
+      v-for="(sitem, sindex) in commentList.comments"
+      :key="20 * sindex + 999"
+    >
+      <CommentItem :commentItem="sitem" />
+    </div>
   </div>
 </template>
 
@@ -31,7 +38,6 @@ import './index.less'
 })
 export default class MvComment extends Vue {
   @Prop() private mvid!: any
-
   // 评论列表
   commentList: any = []
   /** 进行请求评论数据 */

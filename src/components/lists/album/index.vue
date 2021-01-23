@@ -1,5 +1,5 @@
 <template>
-  <div class="myfavorite">我的喜爱</div>
+  <div class="album">11</div>
 </template>
 
 <script lang="ts">
@@ -7,7 +7,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import './index.less'
 
 @Component
-export default class MyFavorite extends Vue {}
+export default class Album extends Vue {}
 </script>
 
 <style scoped></style>

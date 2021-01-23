@@ -1,5 +1,5 @@
 <template>
-  <div>Radio</div>
+  <div class="radio">Radio</div>
 </template>
 
 <script lang="ts">
