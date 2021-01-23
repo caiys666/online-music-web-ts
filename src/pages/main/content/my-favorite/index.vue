@@ -1,5 +1,5 @@
 <template>
-  <div>我的喜爱</div>
+  <div class="myfavorite">我的喜爱</div>
 </template>
 
 <script lang="ts">
