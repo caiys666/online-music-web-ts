@@ -7,11 +7,11 @@
         :key="index"
       >
         <div class="coverimg">
-          <img :src="item.picUrl" alt="" />
+          <img :src="item.picUrl || item.avatarUrl || item.picWebUrl" alt="" />
         </div>
         <div class="category">{{ item.category }}</div>
         <div class="desc">{{ item.desc }}</div>
-        <div class="desc">{{ item.name }}</div>
+        <div class="desc">{{ item.name || item.nickName }}</div>
         <div class="rcmdText">{{ item.rcmdText }}</div>
       </div>
     </div>
