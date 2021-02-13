@@ -8,11 +8,15 @@
       >
         <div class="item-img">
           <div class="item-img__collect">
-            <img
-              :src="item.coverImgUrl"
-              alt=""
+            <div
+              class="img"
+              :style="[
+                {
+                  background: `url(${item.coverImgUrl})`
+                }
+              ]"
               @click="handleCollection(item, index)"
-            />
+            ></div>
             <div
               class="item-img__collect__collection"
               @click="handleCollection(item, index)"
@@ -27,6 +31,14 @@
         <div class="item-name">{{ item.name }}</div>
       </div>
     </div>
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="total"
+      :page-size="50"
+      @current-change="handleChangePagination"
+    >
+    </el-pagination>
   </div>
 </template>
 
@@ -35,8 +47,17 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import music from '@/api/music.ts'
 import PlayList from '@/pages/main/content/play-list/index.vue'
 import './index.less'
-import axios from 'axios'
+import { PageHeader } from 'element-ui'
 
+interface Pagination {
+  pageSize: number
+  offset: number
+}
+
+const pagination: Pagination = {
+  pageSize: 50,
+  offset: 1
+}
 @Component({
   components: { PlayList }
 })
@@ -46,12 +67,19 @@ export default class Sheet extends Vue {
   @Prop() private cat!: any
 
   SongSheetList: any = []
-  offset = 1
   collectionIndex = -1
   // loading
   loading: boolean = true
-  /** 点击歌单进行歌曲数组初始化  并且跳转到播放列表 */
-  async handleCollection(item: any, index: any) {
+  // 总数量
+  total: number = 0
+
+  /**
+   * @note: 点击歌单进行歌曲数组初始化  并且跳转到播放列表
+   * @return {*}
+   * @param {any} item
+   * @param {number} index
+   */
+  async handleCollection(item: any, index: number) {
     this.collectionIndex = index
     const data = {
       params: {
@@ -100,36 +128,53 @@ export default class Sheet extends Vue {
       currentItemIndex: 2
     })
   }
-  addSheetItem() {
-    const url = '/top/playlist'
-    const data = {
-      cat: this.cat,
-      offset: this.offset
-    }
-    if (this.offset < 26) {
-      // setInterval(() => {
-      music.getTopPlayList(data).then(res => {
-        this.SongSheetList.push(...res.data.playlists)
-        this.offset++
-      })
-      // }, 5000);
-    }
-  }
+
+  /**
+   * @note: 监听父组件传过来的数据
+   * @return {*}
+   */
   @Watch('SheetList', { immediate: true, deep: true })
   getInfo(newValue: any, oldValue: any) {
-    // console.log(newValue)
     this.SongSheetList = []
-    this.addSheetItem()
+    this.getTopPlayList()
     this.loading = false
   }
+
+  /**
+   * @note: 组件挂载的时候进行请求数据
+   * @return {*}
+   */
   mounted() {
     if (this.songSheetUrl) {
-      music.getTopPlayList().then(res => {
-        this.SongSheetList = res.data.playlists
-        this.loading = false
-      })
+      this.getTopPlayList()
     }
-    this.addSheetItem()
+  }
+
+  /**
+   * @note: 获取歌单
+   * @return {*}
+   */
+  getTopPlayList() {
+    const data = {
+      cat: this.cat,
+      offset: pagination.offset
+    }
+    music.getTopPlayList(data).then(res => {
+      console.log(res.data)
+      this.total = res.data.total
+      this.SongSheetList = res.data.playlists
+      this.loading = false
+    })
+  }
+
+  /**
+   * @note: 分页逻辑
+   * @return {*}
+   * @param {number} cueenrtPage 当前页
+   */
+  handleChangePagination(cueenrtPage: number) {
+    pagination.offset = cueenrtPage
+    this.getTopPlayList()
   }
 }
 </script>

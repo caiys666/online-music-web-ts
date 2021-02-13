@@ -75,7 +75,7 @@ export default class MvList extends Vue {
   @Prop() private mvList!: Array<Object>
   @Watch('mvList', { immediate: true, deep: true })
   getMvList(newValue: any) {
-    console.log(newValue)
+    // console.log(newValue)
     this.mvList = newValue
   }
   // 选择网格布局还是线性布局标志

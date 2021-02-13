@@ -24,7 +24,7 @@ const getPersonalizedMv = (data?: any) =>
   get(`${basePath}personalized/mv`, data)
 
 // 获取所有mv
-const getMvAll = (data?: any) => get(`${basePath}/mv/all`, data)
+const getMvAll = (data?: any) => get(`${basePath}mv/all`, data)
 
 // 获取相似mv
 const getSimpleMv = (data?: any) => get(`${basePath}simi/mv`, data)

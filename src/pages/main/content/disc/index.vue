@@ -1,5 +1,6 @@
 <template>
   <div class="disc">
+    <h2 style="margin:1vw">全部新碟</h2>
     <div class="disc-albums">
       <div
         class="disc-albums-item"
