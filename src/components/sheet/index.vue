@@ -1,5 +1,5 @@
 <template>
-  <div class="selected">
+  <div class="selected" v-loading="loading">
     <div class="selected__container">
       <div
         class="selected__container__item"
@@ -48,6 +48,8 @@ export default class Sheet extends Vue {
   SongSheetList: any = []
   offset = 1
   collectionIndex = -1
+  // loading
+  loading: boolean = true
   /** 点击歌单进行歌曲数组初始化  并且跳转到播放列表 */
   async handleCollection(item: any, index: any) {
     this.collectionIndex = index
@@ -118,11 +120,13 @@ export default class Sheet extends Vue {
     // console.log(newValue)
     this.SongSheetList = []
     this.addSheetItem()
+    this.loading = false
   }
   mounted() {
     if (this.songSheetUrl) {
       music.getTopPlayList().then(res => {
         this.SongSheetList = res.data.playlists
+        this.loading = false
       })
     }
     this.addSheetItem()

@@ -6,17 +6,19 @@
         v-for="(item, index) in categoryList"
         :key="index"
       >
-        <img :src="item.backImg" alt="" @click="handleSelected(item)" />
-        <div class="title">{{ item.title }}</div>
+        <a href="#dj">
+          <img :src="item.backImg" alt="" @click="handleSelected(item)" />
+          <div class="title">{{ item.title }}</div>
+        </a>
       </div>
     </div>
     <div v-if="!selectText">
       <h2>电台个性推荐</h2>
-      <RadioList :DjRadios="recommendDjRadios" />
+      <RadioList id="dj" :DjRadios="recommendDjRadios" />
     </div>
     <div v-else>
       <h2>{{ selectText }}</h2>
-      <RadioList :DjRadios="DjRadios" />
+      <RadioList id="dj" :DjRadios="DjRadios" />
     </div>
     <!-- <h2>热门电台</h2>
     <RadioList :DjRadios="hotDjRadios" />

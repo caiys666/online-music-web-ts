@@ -1,13 +1,86 @@
 <template>
-  <div class="disc">Disc</div>
+  <div class="disc">
+    <div class="disc-albums">
+      <div
+        class="disc-albums-item"
+        v-for="(item, index) in albums"
+        :key="index"
+      >
+        <div
+          class="ddai-img"
+          :style="[
+            {
+              background: `url(${item.picUrl})`
+            }
+          ]"
+        ></div>
+        <div class="commend">{{ item.name }}</div>
+        <div class="ddai-artists">
+          <div
+            class="commend"
+            v-for="(aitem, aindex) in item.artists"
+            :key="aindex"
+          >
+            {{ aitem.name }}
+          </div>
+        </div>
+        <div class="commend company">{{ item.company }}</div>
+      </div>
+    </div>
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="total"
+      @current-change="handleChangePagination"
+    >
+    </el-pagination>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import album from '@/api/album'
 import './index.less'
 
+interface Pagination {
+  pageSize: number
+  total: number
+  offset: number
+}
+
+// 分页的数据
+const pagination: Pagination = {
+  pageSize: 50,
+  total: 0,
+  offset: 0
+}
 @Component
-export default class Disc extends Vue {}
+export default class Disc extends Vue {
+  albums: Array<Object> = []
+  // 总数量
+  total: number = 0
+  mounted() {
+    this.getAlbumNew()
+  }
+  /**
+   * @note: 获取新碟
+   * @return {*}
+   */
+  getAlbumNew() {
+    const data = {
+      limit: pagination.pageSize,
+      offset: pagination.offset
+    }
+    album.getAlbumNew(data).then(res => {
+      this.albums = res.data.albums
+      this.total = res.data.total
+    })
+  }
+  handleChangePagination(currentPage: number) {
+    pagination.offset = currentPage
+    this.getAlbumNew()
+  }
+}
 </script>
 
 <style scoped></style>

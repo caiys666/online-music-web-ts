@@ -1,5 +1,5 @@
 <template>
-  <div class="category">
+  <div class="category" v-loading="loading">
     <div class="category__select">
       <div class="category__select__item">
         <el-select
@@ -52,6 +52,8 @@ export default class SongCategory extends Vue {
   currentChildCategory: any = []
   // 歌单列表数组
   sheetList: any = []
+  // loading
+  loading: boolean = true
   value = ''
   childValue = ''
   currentKey: any = 0
@@ -98,8 +100,10 @@ export default class SongCategory extends Vue {
     }
     music.getTopPlayList(data).then(res => {
       this.sheetList = res.data.playlists
+      this.loading = false
     })
   }
+
   /** 下拉进行切换childCategory */
   handelChangeSelect(value: any) {
     Object.keys(this.selectCategory).map(k => {

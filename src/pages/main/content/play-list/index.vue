@@ -1,5 +1,5 @@
 <template>
-  <div class="play-list">
+  <div class="play-list" v-loading="loading">
     <div class="play-list__left">
       <div v-if="songLists && songIds">
         <div
@@ -55,6 +55,8 @@ export default class PlayList extends Vue {
     author: '',
     lyric: ''
   }
+  // loading
+  loading: boolean = true
   /** 监听歌曲url数组的变化 */
   @Watch('$store.state.songLists', { immediate: true, deep: true })
   getSongLists(newValue: any) {
@@ -76,6 +78,7 @@ export default class PlayList extends Vue {
         })
       }
     })
+    this.loading = false
   }
   /** 监听歌词数组的变化啊 */
   @Watch('$store.state.songLyric', { immediate: true, deep: true })

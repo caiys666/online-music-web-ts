@@ -5,7 +5,7 @@
       <div class="content">
         <UserTop />
         <keep-alive>
-          <component :is="currentComponent"></component>
+          <component style="margin-top:50px" :is="currentComponent"></component>
         </keep-alive>
       </div>
     </div>

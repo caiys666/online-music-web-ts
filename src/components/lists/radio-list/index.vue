@@ -1,5 +1,5 @@
 <template>
-  <div class="item">
+  <div class="item" v-loading="loading">
     <div v-if="DjRadios" class="item__recommend">
       <div
         class="item__recommend__item"
@@ -25,6 +25,13 @@ import './index.less'
 @Component
 export default class RadioList extends Vue {
   @Prop() private DjRadios!: Array<any>
+  // loading
+  loading: boolean = true
+  mounted() {
+    if (this.DjRadios) {
+      this.loading = false
+    }
+  }
 }
 </script>
 

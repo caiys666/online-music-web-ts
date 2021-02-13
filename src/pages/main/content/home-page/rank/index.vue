@@ -1,7 +1,7 @@
 <template>
   <div class="rank">
     <h2 class="rank__title">排行榜</h2>
-    <div class="rank__list">
+    <div class="rank__list" v-loading="loading">
       <div
         class="rank__list__item"
         v-for="(item, index) in rankList"
@@ -32,8 +32,11 @@ export default class Rank extends Vue {
   songIds: any = []
   // 歌曲列表
   songLists: any = []
+
   // 歌词数组
   songLyric: any = []
+  // loading
+  loading: boolean = true
   mounted() {
     this.getRankListDetail()
   }
@@ -44,6 +47,7 @@ export default class Rank extends Vue {
   getRankListDetail() {
     music.getRankListDetail().then(res => {
       this.rankList = res.data.list
+      this.loading = false
     })
   }
   handleClick(item: any) {
