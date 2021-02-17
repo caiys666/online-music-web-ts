@@ -48,6 +48,8 @@ export default class PlayList extends Vue {
   songLists: any = []
   // 歌词列表
   songLyric: any = []
+  // 歌词正则表达式
+  regex = /\[(.+?)\]/g
   // 当前播放的歌曲信息
   currentSongInfo: any = {
     picture: '',
@@ -84,7 +86,9 @@ export default class PlayList extends Vue {
   @Watch('$store.state.songLyric', { immediate: true, deep: true })
   getSongLyric(newValue: any) {
     this.songLyric = newValue
-    this.currentSongInfo.lyric = this.songLyric[0]
+    let str = String(this.songLyric[0])
+    this.currentSongInfo.lyric = str.replace(this.regex, '')
+    console.log(this.currentSongInfo.lyric)
   }
   /**
    * @note: 点击切换歌曲 更改当前歌曲信息
@@ -100,7 +104,7 @@ export default class PlayList extends Vue {
     item.ar.forEach((k: any) => {
       this.currentSongInfo.author += k.name
     })
-    this.currentSongInfo.lyric = this.songLyric[index]
+    this.currentSongInfo.lyric = this.songLyric[index].replace(this.regex, '')
   }
   /**
    * @note: 获取vuex中歌曲相关数据的初始值
@@ -112,7 +116,7 @@ export default class PlayList extends Vue {
     const songLyric = this.$store.state.songLyric
     if (songIds && songLists) {
       this.songLists = songLists
-      this.currentSongInfo.lyric = this.songLyric[0]
+      this.currentSongInfo.lyric = this.songLyric[0].replace(this.regex, '')
       this.getSongIds(songIds)
     }
   }
