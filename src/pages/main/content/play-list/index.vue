@@ -1,44 +1,56 @@
 <template>
-  <div class="play-list" v-loading="loading">
-    <div class="play-list__left">
-      <div v-if="songLists && songIds">
-        <div
-          class="songs"
-          v-for="(item, index) in songIds"
-          :key="index"
-          :class="{ active: currentIndex === index }"
-          @click="handleSwichSong(item, index)"
-        >
-          <div class="songs__index sitem">{{ index + 1 }}</div>
-          <div class="songs__sname sitem">{{ songIds[index].name }}</div>
-          <div class="songs__author ">
-            <span v-for="(aitem, aindex) in songIds[index].ar" :key="aindex"
-              >{{ aitem.name }},</span
-            >
+  <Spin :spinning="spinning">
+    <div class="play-list" v-loading="loading">
+      <div class="play-list__left" v-if="songLists.length">
+        <div v-if="songLists && songIds">
+          <div
+            class="songs"
+            v-for="(item, index) in songIds"
+            :key="index"
+            :class="{ active: currentIndex === index }"
+            @click="handleSwichSong(item, index)"
+          >
+            <div class="songs__index sitem">{{ index + 1 }}</div>
+            <div class="songs__sname sitem">{{ songIds[index].name }}</div>
+            <div class="songs__author ">
+              <span v-for="(aitem, aindex) in songIds[index].ar" :key="aindex"
+                >{{ aitem.name }},</span
+              >
+            </div>
+            <div class="songs__time sitem">4:35</div>
           </div>
-          <div class="songs__time sitem">4:35</div>
+        </div>
+        <div class="next" style="margin-bottom:60px">下一页</div>
+      </div>
+      <div v-else>
+        <img
+          class="null"
+          src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2341334709,216974654&fm=26&gp=0.jpg"
+          alt=""
+        />
+      </div>
+      <div class="play-list__right">
+        <div class="current" v-if="songLists.length">
+          <img :src="currentSongInfo.picture" alt="" class="current__img" />
+          <div class="current__sname">{{ currentSongInfo.sname }}</div>
+          <div>{{ currentSongInfo.author }}</div>
+          <div class="current__lyric">
+            <p class="lyric">{{ currentSongInfo.lyric }}</p>
+          </div>
         </div>
       </div>
-      <div class="next" style="margin-bottom:60px">下一页</div>
     </div>
-    <div class="play-list__right">
-      <div class="current">
-        <img :src="currentSongInfo.picture" alt="" class="current__img" />
-        <div class="current__sname">{{ currentSongInfo.sname }}</div>
-        <div class="current__sname">{{ currentSongInfo.author }}</div>
-        <div class="current__lyric">
-          <p>{{ currentSongInfo.lyric }}</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  </Spin>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Spin } from 'ant-design-vue'
 import './index.less'
 
-@Component
+@Component({
+  components: { Spin }
+})
 export default class PlayList extends Vue {
   // 当前选中item的索引index
   currentIndex = 0
@@ -50,6 +62,8 @@ export default class PlayList extends Vue {
   songLyric: any = []
   // 歌词正则表达式
   regex = /\[(.+?)\]/g
+  // 加载状态
+  spinning: boolean = true
   // 当前播放的歌曲信息
   currentSongInfo: any = {
     picture: '',
@@ -62,7 +76,17 @@ export default class PlayList extends Vue {
   /** 监听歌曲url数组的变化 */
   @Watch('$store.state.songLists', { immediate: true, deep: true })
   getSongLists(newValue: any) {
-    this.songLists = newValue
+    if (newValue) {
+      this.songLists = newValue
+      setTimeout(() => {
+        this.spinning = false
+      }, 2000)
+      this.currentIndex = 0
+    }
+  }
+  @Watch('$store.state.currentIndex', { immediate: true, deep: true })
+  setCurrentIndex(newValue: number) {
+    this.currentIndex = newValue
   }
   /** 监听歌曲id数组的变化啊 */
   @Watch('$store.state.songIds', { immediate: true, deep: true })
@@ -87,8 +111,9 @@ export default class PlayList extends Vue {
   getSongLyric(newValue: any) {
     this.songLyric = newValue
     let str = String(this.songLyric[0])
-    this.currentSongInfo.lyric = str.replace(this.regex, '')
-    console.log(this.currentSongInfo.lyric)
+    if (str) {
+      this.currentSongInfo.lyric = str.replace(this.regex, '')
+    }
   }
   /**
    * @note: 点击切换歌曲 更改当前歌曲信息
@@ -104,7 +129,10 @@ export default class PlayList extends Vue {
     item.ar.forEach((k: any) => {
       this.currentSongInfo.author += k.name
     })
-    this.currentSongInfo.lyric = this.songLyric[index].replace(this.regex, '')
+    if (this.songLyric[index]) {
+      this.currentSongInfo.lyric = this.songLyric[index].replace(this.regex, '')
+    }
+    this.$store.commit('setIndex', index)
   }
   /**
    * @note: 获取vuex中歌曲相关数据的初始值
@@ -112,12 +140,16 @@ export default class PlayList extends Vue {
    */
   created() {
     const songIds = this.$store.state.songIds
-    const songLists = this.$store.state.songLists
-    const songLyric = this.$store.state.songLyric
-    if (songIds && songLists) {
-      this.songLists = songLists
-      this.currentSongInfo.lyric = this.songLyric[0].replace(this.regex, '')
-      this.getSongIds(songIds)
+    if (this.$store.state.songLists) {
+      const songLists = this.$store.state.songLists
+      const songLyric = this.$store.state.songLyric
+      if (songIds && songLists) {
+        this.songLists = songLists
+        if (this.songLyric[0]) {
+          this.currentSongInfo.lyric = this.songLyric[0].replace(this.regex, '')
+        }
+        this.getSongIds(songIds)
+      }
     }
   }
 }

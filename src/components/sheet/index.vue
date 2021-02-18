@@ -47,7 +47,6 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import music from '@/api/music.ts'
 import PlayList from '@/pages/main/content/play-list/index.vue'
 import './index.less'
-import { PageHeader } from 'element-ui'
 
 interface Pagination {
   pageSize: number
@@ -106,12 +105,20 @@ export default class Sheet extends Vue {
             const songUrlData = { id: res.data.songs[0].id }
             /** 获取歌曲url */
             music.getSongUrl(songUrlData).then(res => {
-              songLists.push(res.data.data[0])
+              if (res.data.data[0]) {
+                songLists.push(res.data.data[0])
+              } else {
+                songLists.push('')
+              }
               this.$store.commit('initSongLists', songLists)
             })
             /** 获取歌词信息 */
             music.getSongLyric(songUrlData).then(res => {
-              songLyric.push(res.data.lrc.lyric)
+              if (res.data.lrc.lyric) {
+                songLyric.push(res.data.lrc.lyric)
+              } else {
+                songLyric.push('')
+              }
               this.$store.commit('initSongLyric', songLyric)
             })
           })

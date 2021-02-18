@@ -7,9 +7,22 @@
   font-size: 0.8vw;
   font-weight: bold;
 
+  .null {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 25vw;
+    height: 25vw;
+    cursor: pointer;
+    margin-top: 1vw;
+  }
+
   &__left {
     width: 50vw;
     margin-top: 1vw;
+
+
 
     .songs {
       display: flex;
@@ -87,13 +100,26 @@
         margin-top: 1vw;
       }
 
+      &__sname {
+        margin-top: 1vw;
+      }
+
       &__lyric {
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
         height: 15vw;
         margin-left: 2.5vw;
+        margin-top: 0.5vw;
         overflow: auto;
         white-space: pre-wrap;
+
+        .lyric {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
       }
     }
   }
