@@ -48,7 +48,7 @@
       <div class="play-right-audio">
         <audio
           v-if="isEmptySongLists"
-          :src="currentSong.url"
+          :src="currentSong.url || ''"
           ref="audio"
         ></audio>
       </div>
@@ -93,7 +93,7 @@ export default class Play extends Vue {
       this.songLists = newValue
       this.isEmptySongLists = true
       this.currentSong.url = this.$store.state.songLists[0].url
-      console.log(this.audio.currentTime)
+      // console.log(this.audio.currentTime)
       this.playSong(1)
     }
   }
@@ -103,16 +103,18 @@ export default class Play extends Vue {
       this.songIds = newValue
       this.currentSong.author = newValue[0].ar[0].name
       this.currentSong.name = newValue[0].name
+      this.songIcon = newValue[0].al.picUrl
     }
   }
   @Watch('$store.state.currentIndex', { immediate: true, deep: true })
   setCurrentIndex(newValue: number) {
     if (newValue >= 0) {
-      if (this.$store.state.songLists[newValue].url) {
+      if (this.$store.state.songLists[newValue].url !== undefined) {
         this.currentSong.url = this.$store.state.songLists[newValue].url
         this.currentSong.index = newValue
         this.currentSong.author = this.songIds[newValue].ar[0].name
         this.currentSong.name = this.songIds[newValue].name
+        this.songIcon = this.songIds[newValue].al.picUrl
         this.playSong(1)
       } else {
         message.error('版权原因不可播放！')
@@ -191,10 +193,10 @@ export default class Play extends Vue {
   }
   handleChangeProgress(value: any) {
     this.setCountTime()
-    console.log(value)
+    // console.log(value)
     this.currentSong.defaultValue = value
     const currentTime = (this.audio.duration / 100) * value
-    console.log(currentTime)
+    // console.log(currentTime)
     this.audio.currentTime = currentTime
     const time = String((this.audio.currentTime / 60).toFixed(2))
     const t1 = time.slice(0, 1)
@@ -207,6 +209,10 @@ export default class Play extends Vue {
     this.currentSong.currentTime = String(t1 + ':' + t2)
     console.log(this.currentSong.currentTime)
   }
+  /**
+   * @param{any} value
+   * @description 音量修改
+   */
   handleChangeVolume(value: any) {
     this.currentSong.volume = value
     this.audio.volume = value / 100

@@ -87,6 +87,8 @@ export default class PlayList extends Vue {
   @Watch('$store.state.currentIndex', { immediate: true, deep: true })
   setCurrentIndex(newValue: number) {
     this.currentIndex = newValue
+    const item = this.songIds[newValue]
+    this.handleSwichSong(item, newValue)
   }
   /** 监听歌曲id数组的变化啊 */
   @Watch('$store.state.songIds', { immediate: true, deep: true })
