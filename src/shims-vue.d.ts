@@ -18,3 +18,7 @@ declare module '*.module.scss' {
 }
 
 declare module 'vue-video-player'
+declare module 'vue-aplayer' {
+  import vueAplayer from 'vue-aplayer'
+  export default vueAplayer
+}

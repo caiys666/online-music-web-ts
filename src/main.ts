@@ -7,6 +7,7 @@ import Element from 'element-ui'
 import Antd from 'ant-design-vue'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import VueVideoPlayer from 'vue-video-player'
+import vueAplayer from 'vue-aplayer'
 
 require('video.js/dist/video-js.css')
 require('vue-video-player/src/custom-theme.css')
@@ -23,6 +24,7 @@ Vue.use(Element)
 Vue.use(Antd)
 Vue.use(Mock)
 Vue.use(VueVideoPlayer)
+Vue.use(vueAplayer)
 Vue.prototype.$EventBus = new Vue()
 
 new Vue({

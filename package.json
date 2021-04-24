@@ -18,6 +18,7 @@
     "swiper": "^6.4.5",
     "unsplash-js": "^7.0.2",
     "vue": "^2.6.11",
+    "vue-aplayer": "^1.6.1",
     "vue-awesome-swiper": "^4.1.1",
     "vue-class-component": "^7.2.3",
     "vue-mini-player": "^0.2.1",
