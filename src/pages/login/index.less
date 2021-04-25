@@ -1,0 +1,55 @@
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background-image: linear-gradient(to right, #292a2a, #97cfbe);
+
+    &-box {
+        width: 500px;
+        height: 500px;
+        background-color: rgb(75, 82, 88);
+        border-radius: 10px;
+
+        .ipt {
+            width: 80%;
+            margin: 0 auto;
+            margin-top: 20px;
+
+            .iconfont {
+                height: 30px;
+                font-size: 20px;
+                color: #db5520;
+            }
+
+            input {
+                margin-left: 10px;
+                display: inline-block;
+                width: 250px;
+                line-height: 30px;
+                outline: none;
+                border-radius: 5px;
+                font-size: 16px;
+                padding-left: 15px;
+            }
+        }
+
+        &-account {
+            padding-top: 80px;
+        }
+
+        &-btn {
+            outline: none;
+            width: 30%;
+            margin-top: 70px;
+            height: 35px;
+            border-radius: 10px;
+            font-size: 20px;
+            border: none;
+            background-image: linear-gradient(to right, #476161, #71e0bf);
+            cursor: pointer;
+        }
+
+    }
+}

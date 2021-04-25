@@ -47,7 +47,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import music from '@/api/music.ts'
+import music from '@/api/music'
 import MvVideo from '@/components/mv/mv-video/index.vue'
 import MvComment from '@/components/mv/mv-comment/index.vue'
 import MvUser from '@/components/mv/mv-user/index.vue'
@@ -103,7 +103,7 @@ export default class MvDetail extends Vue {
 
   /** 根据mvid进行请求mv信息详细数据 */
   getInfoById(id: any) {
-    music.getMvDetail({ mvid: id }).then(res => {
+    music.getMvDetail({ mvid: id }).then((res: any) => {
       const mvItem = res.data.data
       this.$set(this, 'mvItem', mvItem)
       this.artists = this.mvItem.artists
@@ -137,7 +137,7 @@ export default class MvDetail extends Vue {
   /** 获取mv地址 */
   getUrlById(id: any) {
     this.mvUrlParams.id = id
-    music.getMvUrl(this.mvUrlParams).then(res => {
+    music.getMvUrl(this.mvUrlParams).then((res: any) => {
       this.currentMv = res.data.data
     })
   }
