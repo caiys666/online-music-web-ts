@@ -32,11 +32,24 @@ export default class Login extends Vue {
     password: ''
   }
   created() {}
+  /**
+   * 用户点击进行登录
+   */
   async handleLogin() {
-    console.log(111)
     try {
       const res = await user.getUserLogin(this.userObj)
       if (res && res.status == 200) {
+        const userObj = {
+          userName: res.data.account.userName,
+          nickname: res.data.profile.nickname,
+          avatarUrl: res.data.profile.avatarUrl,
+          backgroundUrl: res.data.profile.backgroundUrl,
+          province: res.data.profile.province,
+          city: res.data.profile.city,
+          birthday: res.data.profile.birthday,
+          token: res.data.token
+        }
+        this.$store.commit('setUserInfo', userObj)
         this.$router.push({
           name: 'Main'
         })

@@ -21,7 +21,18 @@ export default new Vuex.Store({
     // 电台数组
     djRadios: [],
     // 歌曲播放的index
-    currentIndex: 0
+    currentIndex: 0,
+    // 用户登录之后的信息
+    userObj: {
+      userName: '',
+      nickname: '',
+      avatarUrl: '',
+      backgroundUrl: '',
+      province: 0,
+      city: 0,
+      birthday: 0,
+      token: ''
+    }
   },
   mutations: {
     /**
@@ -90,6 +101,15 @@ export default new Vuex.Store({
         state.currentIndex--
       } else {
         message.error('不能再减了！')
+      }
+    },
+    /**
+     * @params
+     * 设置用户登录信息
+     */
+    setUserInfo(state, userObj) {
+      if (userObj) {
+        state.userObj = userObj
       }
     }
   },
