@@ -42,17 +42,20 @@ export default class Login extends Vue {
         const userObj = {
           userName: res.data.account.userName,
           nickname: res.data.profile.nickname,
+          gender: res.data.profile.gender,
           avatarUrl: res.data.profile.avatarUrl,
           backgroundUrl: res.data.profile.backgroundUrl,
           province: res.data.profile.province,
           city: res.data.profile.city,
           birthday: res.data.profile.birthday,
+          signature: res.data.profile.signature,
           token: res.data.token
         }
         this.$store.commit('setUserInfo', userObj)
         this.$router.push({
           name: 'Main'
         })
+        console.log(res)
       }
     } catch (error) {
       console.log(error)

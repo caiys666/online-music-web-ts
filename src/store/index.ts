@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { message } from 'ant-design-vue'
+import Moment from 'moment'
 
 Vue.use(Vuex)
 
@@ -26,11 +27,13 @@ export default new Vuex.Store({
     userObj: {
       userName: '',
       nickname: '',
+      gender: '',
       avatarUrl: '',
       backgroundUrl: '',
       province: 0,
       city: 0,
-      birthday: 0,
+      birthday: '',
+      signature: '',
       token: ''
     }
   },
@@ -110,6 +113,7 @@ export default new Vuex.Store({
     setUserInfo(state, userObj) {
       if (userObj) {
         state.userObj = userObj
+        state.userObj.birthday = Moment(userObj.birthday).format('YYYY-MM-DD')
       }
     }
   },
