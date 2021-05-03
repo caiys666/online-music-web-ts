@@ -86,7 +86,9 @@ import './index.less'
   components: { Modal, DatePicker }
 })
 export default class UserTop extends Vue {
-  userObj = {}
+  userObj = {
+    // birthday: ''
+  }
   visible: boolean = false
   isEdit: boolean = false
   editTitle: String = '编辑'
@@ -94,7 +96,7 @@ export default class UserTop extends Vue {
   updateUserInfo = {
     nickname: '',
     gender: 0,
-    birthday: this.$store.state.userObj.birthday,
+    birthday: 0,
     province: 210000,
     city: 210100,
     signature: ''
@@ -117,7 +119,6 @@ export default class UserTop extends Vue {
   handleOk() {
     if (this.isEdit) {
       this.handleUpdateUser()
-      // this.visible = false
     } else {
       this.isEdit = true
       this.editTitle = '确定'
@@ -129,11 +130,20 @@ export default class UserTop extends Vue {
    */
   async handleUpdateUser() {
     this.updateUserInfo.gender = this.userGender
+    // this.updateUserInfo.birthday = Moment(this.userObj.birthday).unix()
+    console.log(this.userObj.birthday)
+    this.updateUserInfo.birthday = Moment()
+      .startOf('1999-06-12')
+      .valueOf()
+    console.log(this.updateUserInfo.birthday)
+    console.log(Moment(1619576849784).format('YYYY-MM-DD'))
     console.log(this.updateUserInfo)
     try {
       const res = await user.updateUserInfo(this.updateUserInfo)
       if (res.data.code == 200) {
-        this.handleGetUserInfo()
+        this.$nextTick(() => {
+          this.handleGetUserInfo()
+        })
         this.visible = false
         this.editTitle = '编辑'
         this.isEdit = false
@@ -150,15 +160,13 @@ export default class UserTop extends Vue {
   /**
    * 获取用户信息和存储
    */
-  handleGetUserInfo() {
-    this.$nextTick(async () => {
-      const result = await user.getUserDetail()
-      if (result.data) {
-        this.userObj = userFunc.saveUser(result.data)
-        this.$store.commit('setUserInfo', this.userObj)
-        console.log(this.userObj)
-      }
-    })
+  async handleGetUserInfo() {
+    const result = await user.getUserDetail()
+    if (result.data) {
+      this.userObj = userFunc.saveUser(result.data)
+      this.$store.commit('setUserInfo', this.userObj)
+      console.log(this.userObj)
+    }
   }
 
   /**

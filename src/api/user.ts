@@ -32,4 +32,33 @@ const updateUserInfo = (data?: any) => get(`${basePath}/user/update`, data)
  */
 const getUserDetail = (data?: any) => get(`${basePath}/user/account`, data)
 
-export default { getUserLogin, getAreaList, updateUserInfo, getUserDetail }
+/**
+ * 获取验证码
+ * @param data Object
+ * @returns
+ */
+const getCaptcha = (data?: any) => get(`${basePath}/captcha/sent`, data)
+
+/**
+ * 验证验证码
+ * @param data Object
+ * @returns
+ */
+const validCaptcha = (data?: any) => get(`${basePath}/captcha/verify`, data)
+
+/**
+ * 注册
+ * @param data Object
+ * @returns
+ */
+const registerUser = (data?: any) => get(`${basePath}/register/cellphone`, data)
+
+export default {
+  getUserLogin,
+  getAreaList,
+  updateUserInfo,
+  getUserDetail,
+  getCaptcha,
+  validCaptcha,
+  registerUser
+}

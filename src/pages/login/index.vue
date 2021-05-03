@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import user from '@/api/user'
 import './index.less'
 
@@ -31,7 +31,15 @@ export default class Login extends Vue {
     phone: '',
     password: ''
   }
-  created() {}
+
+  // @Watch('$route', { immediate: true, deep: true })
+  // reloadLogin(newValue: any, oldValue: any) {
+  //   if (newValue.name !== oldValue.name) {
+  //     if (newValue.name === 'Login') {
+  //       location.reload()
+  //     }
+  //   }
+  // }
   /**
    * 用户点击进行登录
    */
@@ -48,8 +56,7 @@ export default class Login extends Vue {
           province: res.data.profile.province,
           city: res.data.profile.city,
           birthday: res.data.profile.birthday,
-          signature: res.data.profile.signature,
-          token: res.data.token
+          signature: res.data.profile.signature
         }
         this.$store.commit('setUserInfo', userObj)
         this.$router.push({

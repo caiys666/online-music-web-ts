@@ -1,31 +1,31 @@
-import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
-import Login from "../pages/login/index.vue";
+import Vue from 'vue'
+import VueRouter, { RouteConfig } from 'vue-router'
+import Pages from '../pages/index.vue'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/",
-    name: "Login",
-    component: Login,
+    path: '/',
+    name: 'Login',
+    component: Pages
   },
   {
-    path: "/main",
-    name: "Main",
-    component: () => import("../pages/main/Main.vue"),
+    path: '/main',
+    name: 'Main',
+    component: () => import('../pages/main/Main.vue')
   },
   {
-    path: "/mvDetail",
-    name: "MvDetail",
-    component: () => import("../pages/mv-detail/index.vue"),
-  },
-];
+    path: '/mvDetail',
+    name: 'MvDetail',
+    component: () => import('../pages/mv-detail/index.vue')
+  }
+]
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
-  routes,
-});
+  routes
+})
 
-export default router;
+export default router

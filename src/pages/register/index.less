@@ -1,4 +1,4 @@
-.login {
+.register {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,10 +28,34 @@
                 font-size: 16px;
                 padding-left: 15px;
             }
+
+            .common {
+                display: inline-block;
+                width: 45px;
+                text-align: right;
+                color: white;
+            }
         }
 
         &-account {
             padding-top: 80px;
+        }
+
+        &-captcha {
+            input {
+                display: inline-block;
+                width: 160px !important;
+            }
+
+            button {
+                outline: none;
+                border: none;
+                cursor: pointer;
+                line-height: 30px;
+                border-radius: 5px;
+                font-size: 14px;
+                margin-left: 5px;
+            }
         }
 
         &-btn {

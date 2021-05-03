@@ -33,8 +33,8 @@ export default new Vuex.Store({
       province: 0,
       city: 0,
       birthday: '',
-      signature: '',
-      token: ''
+      signature: ''
+      // token: ''
     }
   },
   mutations: {
