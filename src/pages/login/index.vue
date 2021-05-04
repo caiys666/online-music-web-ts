@@ -4,10 +4,12 @@
       <h2>Login</h2>
       <h3>Welcome to Cabbage's Website</h3>
       <div class="login-box-account ipt">
+        <label class="common" for="">电话</label>
         <i class="iconfont icon-icon-user" />
         <input v-model="userObj.phone" type="text" placeholder="account" />
       </div>
       <div class="login-box-password ipt">
+        <label class="common" for="">密码</label>
         <i class="iconfont icon-mima" />
         <input
           v-model="userObj.password"
@@ -23,6 +25,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import user from '@/api/user'
+import Moment from 'moment'
 import './index.less'
 
 @Component
@@ -40,6 +43,7 @@ export default class Login extends Vue {
   //     }
   //   }
   // }
+
   /**
    * 用户点击进行登录
    */
@@ -55,10 +59,10 @@ export default class Login extends Vue {
           backgroundUrl: res.data.profile.backgroundUrl,
           province: res.data.profile.province,
           city: res.data.profile.city,
-          birthday: res.data.profile.birthday,
+          birthday: Moment(res.data.profile.birthday),
           signature: res.data.profile.signature
         }
-        this.$store.commit('setUserInfo', userObj)
+        localStorage.setItem('userInfo', JSON.stringify(userObj))
         this.$router.push({
           name: 'Main'
         })

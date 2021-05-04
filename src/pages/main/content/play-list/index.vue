@@ -60,6 +60,7 @@ export default class PlayList extends Vue {
   songLists: any = []
   // 歌词列表
   songLyric: any = []
+  countListen: any = [0, 0, 0, 0, 0, 0, 0]
   // 歌词正则表达式
   regex = /\[(.+?)\]/g
   // 加载状态
@@ -89,6 +90,7 @@ export default class PlayList extends Vue {
     this.currentIndex = newValue
     const item = this.songIds[newValue]
     this.handleSwichSong(item, newValue)
+    this.setCountListen()
   }
   /** 监听歌曲id数组的变化啊 */
   @Watch('$store.state.songIds', { immediate: true, deep: true })
@@ -135,6 +137,28 @@ export default class PlayList extends Vue {
       this.currentSongInfo.lyric = this.songLyric[index].replace(this.regex, '')
     }
     this.$store.commit('setIndex', index)
+  }
+
+  /**
+   * 点击一次记录一次听歌记录
+   */
+  setCountListen() {
+    const date = new Date().getDay()
+    let countListen: any = this.replaceStr(
+      localStorage.getItem('countListen') || ''
+    )
+    let count = 0
+    if (countListen) {
+      count = countListen[date]
+    }
+    count++
+    this.countListen[date] = count
+    console.log(count)
+    localStorage.setItem('countListen', this.countListen)
+  }
+
+  replaceStr(str: String) {
+    return str.split(',')
   }
   /**
    * @note: 获取vuex中歌曲相关数据的初始值

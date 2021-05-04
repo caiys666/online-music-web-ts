@@ -86,7 +86,7 @@ import './index.less'
   components: { Modal, DatePicker }
 })
 export default class UserTop extends Vue {
-  userObj = {
+  userObj: any = {
     // birthday: ''
   }
   visible: boolean = false
@@ -102,16 +102,17 @@ export default class UserTop extends Vue {
     signature: ''
   }
   mounted() {
-    this.userObj = this.$store.state.userObj
-    this.userGender = this.$store.state.userObj.gender
+    this.userObj = JSON.parse(localStorage.getItem('userInfo') || '')
+    this.userGender = this.userObj.gender
     this.updateUserInfo.gender = this.userGender
-    this.updateUserInfo.nickname = this.$store.state.userObj.nickname
+    this.updateUserInfo.nickname = this.userObj.nickname
   }
   /**
    * 打开弹出框方法
    */
   handleShowModal() {
     this.visible = true
+    this.userObj = JSON.parse(localStorage.getItem('userInfo') || '')
   }
   /**
    * 确定并且修改个人信息方法
@@ -130,11 +131,10 @@ export default class UserTop extends Vue {
    */
   async handleUpdateUser() {
     this.updateUserInfo.gender = this.userGender
-    // this.updateUserInfo.birthday = Moment(this.userObj.birthday).unix()
     console.log(this.userObj.birthday)
-    this.updateUserInfo.birthday = Moment()
-      .startOf('1999-06-12')
-      .valueOf()
+    // this.updateUserInfo.birthday = Moment()
+    //   .startOf('1999-06-12')
+    //   .valueOf()
     console.log(this.updateUserInfo.birthday)
     console.log(Moment(1619576849784).format('YYYY-MM-DD'))
     console.log(this.updateUserInfo)
@@ -164,7 +164,8 @@ export default class UserTop extends Vue {
     const result = await user.getUserDetail()
     if (result.data) {
       this.userObj = userFunc.saveUser(result.data)
-      this.$store.commit('setUserInfo', this.userObj)
+      // localStorage.clear()
+      localStorage.setItem('userInfo', this.userObj)
       console.log(this.userObj)
     }
   }
