@@ -35,7 +35,9 @@
           <div class="current__sname">{{ currentSongInfo.sname }}</div>
           <div>{{ currentSongInfo.author }}</div>
           <div class="current__lyric">
-            <p class="lyric">{{ currentSongInfo.lyric }}</p>
+            <p v-if="currentSongInfo.lyric" class="lyric">
+              {{ currentSongInfo.lyric }}
+            </p>
           </div>
         </div>
       </div>
@@ -81,7 +83,7 @@ export default class PlayList extends Vue {
       this.songLists = newValue
       setTimeout(() => {
         this.spinning = false
-      }, 2000)
+      }, 5000)
       this.currentIndex = 0
     }
   }
@@ -98,14 +100,16 @@ export default class PlayList extends Vue {
     this.songIds = newValue
     this.songIds.forEach((k: any) => {
       if (typeof k === 'object') {
-        if (this.songIds[0].al) {
-          this.currentSongInfo.picture = this.songIds[0].al.picUrl
-        }
-        this.currentSongInfo.sname = this.songIds[0].name
-        this.currentSongInfo.author = ''
-        this.songIds[0].ar.forEach((k: any) => {
-          this.currentSongInfo.author += k.name
-        })
+        setTimeout(() => {
+          if (this.songIds[0]) {
+            this.currentSongInfo.picture = this.songIds[0].al.picUrl
+            this.currentSongInfo.sname = this.songIds[0].name
+            this.currentSongInfo.author = ''
+            this.songIds[0].ar.forEach((k: any) => {
+              this.currentSongInfo.author += k.name
+            })
+          }
+        }, 500)
       }
     })
     this.loading = false
@@ -127,12 +131,15 @@ export default class PlayList extends Vue {
    */
   handleSwichSong(item: any, index: number) {
     this.currentIndex = index
-    this.currentSongInfo.picture = item.al.picUrl
-    this.currentSongInfo.sname = item.name
-    this.currentSongInfo.author = ''
-    item.ar.forEach((k: any) => {
-      this.currentSongInfo.author += k.name
-    })
+    if (item) {
+      this.currentSongInfo.picture = item.al.picUrl
+      this.currentSongInfo.sname = item.name
+      this.currentSongInfo.author = ''
+      item.ar.forEach((k: any) => {
+        this.currentSongInfo.author += k.name
+      })
+    }
+
     if (this.songLyric[index]) {
       this.currentSongInfo.lyric = this.songLyric[index].replace(this.regex, '')
     }
@@ -153,7 +160,7 @@ export default class PlayList extends Vue {
     }
     count++
     this.countListen[date] = count
-    console.log(count)
+    // console.log(count)
     localStorage.setItem('countListen', this.countListen)
   }
 

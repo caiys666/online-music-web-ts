@@ -1,5 +1,6 @@
 <template>
   <div class="echarts">
+    <a-icon class="reload" type="reload" @click="handleRefresh" :spin="spin" />
     <div id="myChart"></div>
   </div>
 </template>
@@ -11,20 +12,27 @@ import './index.less'
 var echarts = require('echarts')
 @Component
 export default class Echarts extends Vue {
+  // 听歌次数数组
   countListen: any = []
+  // 刷新icon
+  spin: boolean = false
   mounted() {
-    this.replaceStr()
+    this.handleRefresh()
     this.drawLine()
   }
 
-  replaceStr() {
-    let countListen: any = (localStorage.getItem('countListen') || '').split(
-      ','
-    )
-    if (countListen) {
-      this.countListen = countListen
-    }
-    console.log(this.countListen)
+  handleRefresh() {
+    this.spin = true
+    setTimeout(() => {
+      let countListen: any = (localStorage.getItem('countListen') || '').split(
+        ','
+      )
+      if (countListen) {
+        this.countListen = countListen
+      }
+      this.drawLine()
+      this.spin = false
+    }, 1000)
   }
 
   drawLine() {
@@ -53,7 +61,7 @@ export default class Echarts extends Vue {
       },
       series: [
         {
-          name: '面积模式',
+          name: '听歌次数统计',
           type: 'pie',
           radius: [50, 250],
           center: ['50%', '50%'],

@@ -1,52 +1,52 @@
 <template>
-  <div class="selected" v-loading="loading">
-    <div class="selected__container">
-      <div
-        class="selected__container__item"
-        v-for="(item, index) in SongSheetList"
-        :key="index"
-      >
-        <div class="item-img">
-          <div class="item-img__collect">
-            <div
-              class="img"
-              :style="[
-                {
-                  background: `url(${item.coverImgUrl})`
-                }
-              ]"
-              @click="handleCollection(item, index)"
-            ></div>
-            <div
-              class="item-img__collect__collection"
-              @click="handleCollection(item, index)"
-            >
-              <i
-                class="iconfont iconcollect-01"
-                :class="[index == collectionIndex ? 'collectioned' : '']"
-              ></i>
+  <a-spin :spinning="spinning">
+    <div class="selected">
+      <div class="selected__container">
+        <div
+          class="selected__container__item"
+          v-for="(item, index) in SongSheetList"
+          :key="index"
+        >
+          <div class="item-img">
+            <div class="item-img__collect">
+              <div
+                class="img"
+                :style="[
+                  {
+                    background: `url(${item.coverImgUrl})`
+                  }
+                ]"
+                @click="handleCollection(item, index)"
+              ></div>
+              <div class="item-img__collect__collection">
+                <i
+                  class="iconfont iconcollect-01"
+                  v-on:click.stop="handleCollect(item, index)"
+                  :class="[index == collectionIndex ? 'collectioned' : '']"
+                ></i>
+              </div>
             </div>
           </div>
+          <div class="item-name">{{ item.name }}</div>
         </div>
-        <div class="item-name">{{ item.name }}</div>
       </div>
-    </div>
-    <el-pagination
-      background
-      layout="prev, pager, next"
-      :total="total"
-      :page-size="50"
-      @current-change="handleChangePagination"
-    >
-    </el-pagination>
-  </div>
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        :page-size="50"
+        @current-change="handleChangePagination"
+      >
+      </el-pagination></div
+  ></a-spin>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-import music from '@/api/music.ts'
+import music from '@/api/music'
 import PlayList from '@/pages/main/content/play-list/index.vue'
 import './index.less'
+import user from '@/api/user'
 
 interface Pagination {
   pageSize: number
@@ -67,8 +67,8 @@ export default class Sheet extends Vue {
 
   SongSheetList: any = []
   collectionIndex = -1
-  // loading
-  loading: boolean = true
+  // spinning
+  spinning: boolean = true
   // 总数量
   total: number = 0
 
@@ -79,11 +79,8 @@ export default class Sheet extends Vue {
    * @param {number} index
    */
   async handleCollection(item: any, index: number) {
-    this.collectionIndex = index
     const data = {
-      params: {
-        id: item.id
-      }
+      id: item.id
     }
     let trackIds: any = []
     const songIds: any = []
@@ -91,7 +88,7 @@ export default class Sheet extends Vue {
     const songLyric: any = []
     this.$nextTick(() => {
       /** 获取歌曲trackid */
-      music.getTrackIds({ id: item.id }).then(res => {
+      music.getTrackIds(data).then(res => {
         trackIds = res.data.playlist.trackIds
         getSongId()
       })
@@ -114,10 +111,10 @@ export default class Sheet extends Vue {
             })
             /** 获取歌词信息 */
             music.getSongLyric(songUrlData).then(res => {
-              if (res.data.lrc.lyric) {
+              if (res.data.lrc.lyric !== 'undefined') {
                 songLyric.push(res.data.lrc.lyric)
               } else {
-                songLyric.push('')
+                songLyric.push(' ')
               }
               this.$store.commit('initSongLyric', songLyric)
             })
@@ -144,7 +141,16 @@ export default class Sheet extends Vue {
   getInfo(newValue: any, oldValue: any) {
     this.SongSheetList = []
     this.getTopPlayList()
-    this.loading = false
+    this.setSpin()
+  }
+
+  /**
+   * 设置加载
+   */
+  setSpin() {
+    setTimeout(() => {
+      this.spinning = false
+    }, 2000)
   }
 
   /**
@@ -170,7 +176,6 @@ export default class Sheet extends Vue {
       console.log(res.data)
       this.total = res.data.total
       this.SongSheetList = res.data.playlists
-      this.loading = false
     })
   }
 
@@ -182,6 +187,25 @@ export default class Sheet extends Vue {
   handleChangePagination(cueenrtPage: number) {
     pagination.offset = cueenrtPage
     this.getTopPlayList()
+  }
+
+  /**
+   * 添加到我的喜欢
+   */
+  async handleCollect(item: any, index: number) {
+    this.collectionIndex = index
+    const obj = {
+      t: 1,
+      id: item.id
+    }
+    try {
+      const res = await user.subscribePlaylist(obj)
+      if (res.data.code == 200) {
+        alert('收藏歌单成功！')
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 </script>

@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div class="selected">
-      <Sheet :songSheetUrl="songSheetUrl" />
-    </div>
+    <a-spin :spinning="spinning">
+      <div class="selected">
+        <Sheet :songSheetUrl="songSheetUrl" />
+      </div>
+    </a-spin>
   </div>
 </template>
 
@@ -18,8 +20,13 @@ import './index.less'
 export default class Selected extends Vue {
   @Prop() private songSheetUrl!: string
 
+  spinning: boolean = true
   SongSheetList = []
   collectionIndex = -1
+
+  /**
+   * 跳转到播放列表页面
+   */
   handleCollection(item: any, index: any) {
     this.collectionIndex = index
     this.$router.push({
@@ -28,9 +35,18 @@ export default class Selected extends Vue {
     })
   }
   mounted() {
-    music.getTopPlayList().then(res => {
+    music.getTopPlayList().then((res: any) => {
       this.SongSheetList = res.data.playlists
     })
+    this.setSpin()
+  }
+  /**
+   * 设置加载
+   */
+  setSpin() {
+    setTimeout(() => {
+      this.spinning = false
+    }, 2000)
   }
 }
 </script>

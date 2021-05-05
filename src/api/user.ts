@@ -53,6 +53,22 @@ const validCaptcha = (data?: any) => get(`${basePath}/captcha/verify`, data)
  */
 const registerUser = (data?: any) => get(`${basePath}/register/cellphone`, data)
 
+/**
+ * 获取用户歌单信息
+ * @param data Object
+ * @returns
+ */
+const getUserPlayList = (data?: any) => get(`${basePath}/user/playlist`, data)
+
+/**
+ * 收藏/取消收藏歌单
+ * t : 类型,1:收藏,2:取消收藏 id : 歌单 id
+ * @param data Object
+ * @returns
+ */
+const subscribePlaylist = (data?: any) =>
+  get(`${basePath}/playlist/subscribe`, data)
+
 export default {
   getUserLogin,
   getAreaList,
@@ -60,5 +76,7 @@ export default {
   getUserDetail,
   getCaptcha,
   validCaptcha,
-  registerUser
+  registerUser,
+  getUserPlayList,
+  subscribePlaylist
 }

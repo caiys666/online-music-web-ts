@@ -1,5 +1,5 @@
 <template>
-  <div class="category" v-loading="loading">
+  <div class="category">
     <div class="category__select">
       <div class="category__select__item">
         <el-select
@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import music from '@/api/music.ts'
+import music from '@/api/music'
 import axios from 'axios'
 import Sheet from '@/components/sheet/index.vue'
 import './index.less'
@@ -52,8 +52,7 @@ export default class SongCategory extends Vue {
   currentChildCategory: any = []
   // 歌单列表数组
   sheetList: any = []
-  // loading
-  loading: boolean = true
+
   value = ''
   childValue = ''
   currentKey: any = 0
@@ -67,6 +66,7 @@ export default class SongCategory extends Vue {
   mounted() {
     this.getSelectCategory()
   }
+
   /** 获取下拉列表 */
   async getSelectCategory() {
     const res = await axios.get('/cloud/playlist/catlist')
@@ -93,18 +93,22 @@ export default class SongCategory extends Vue {
     this.childValue = this.currentChildCategory[0].name
     console.log(this.selectChildCategory)
   }
-  /** 获取对应下拉选中数据的歌单信息 */
+
+  /**
+   * 获取对应下拉选中数据的歌单信息
+   */
   getCategorySheetInfo(value: any) {
     let data = {
       cat: value
     }
     music.getTopPlayList(data).then(res => {
       this.sheetList = res.data.playlists
-      this.loading = false
     })
   }
 
-  /** 下拉进行切换childCategory */
+  /**
+   * 下拉进行切换childCategory
+   */
   handelChangeSelect(value: any) {
     Object.keys(this.selectCategory).map(k => {
       if (this.selectCategory[k] === value) {

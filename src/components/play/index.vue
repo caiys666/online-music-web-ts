@@ -3,7 +3,7 @@
     <aplayer
       :autoplay="autoplay"
       style="margin-bottom:0px;width:100%"
-      :music="currentMusic"
+      :music="music"
     />
   </div>
 </template>
@@ -23,7 +23,7 @@ export default class Play extends Vue {
   isEmptySongLists = false
   // 当前播放的音乐
   currentSong = {
-    url: '',
+    url: '1',
     index: 0,
     author: '',
     name: '',
@@ -32,10 +32,10 @@ export default class Play extends Vue {
     defaultValue: 0,
     volume: 50
   }
-  currentMusic = {
+  music = {
     title: '',
     artist: '',
-    src: '',
+    src: '1',
     pic: ''
   }
   // 是否播放
@@ -52,13 +52,13 @@ export default class Play extends Vue {
       this.songLists = newValue
       this.isEmptySongLists = true
       this.autoplay = false
-      this.currentMusic = {
+      this.music = {
         title: '',
         artist: '',
-        src: '',
+        src: '1',
         pic: ''
       }
-      this.currentMusic.src = this.$store.state.songLists[0].url
+      this.music.src = this.$store.state.songLists[0].url
       this.autoplay = true
       this.playSong(1)
     }
@@ -71,15 +71,15 @@ export default class Play extends Vue {
     if (newValue.length > 0) {
       this.songIds = newValue
       this.autoplay = false
-      this.currentMusic = {
+      this.music = {
         title: '',
         artist: '',
-        src: '',
+        src: '1',
         pic: ''
       }
-      this.currentMusic.artist = newValue[0].ar[0].name
-      this.currentMusic.pic = newValue[0].al.picUrl
-      this.currentMusic.title = newValue[0].name
+      this.music.artist = newValue[0].ar[0].name
+      this.music.pic = newValue[0].al.picUrl
+      this.music.title = newValue[0].name
       this.autoplay = true
     }
   }
@@ -89,26 +89,29 @@ export default class Play extends Vue {
   @Watch('$store.state.currentIndex', { immediate: true, deep: true })
   setCurrentIndex(newValue: number) {
     if (newValue >= 0) {
-      if (this.$store.state.songLists[newValue].url !== undefined) {
-        this.autoplay = false
-        this.currentMusic = {
-          title: '',
-          artist: '',
-          src: '',
-          pic: ''
-        }
-        this.currentMusic.src = this.$store.state.songLists[newValue].url
-        this.currentMusic.artist = this.songIds[newValue].ar[0].name
-        this.currentMusic.pic = this.songIds[newValue].al.picUrl
-        this.currentMusic.title = this.songIds[newValue].name
-        this.autoplay = true
-        this.playSong(1)
-      } else {
-        message.error('版权原因不可播放！')
-        this.$nextTick(() => {
+      setTimeout(() => {
+        if (this.$store.state.songLists[newValue]) {
           this.autoplay = false
-        })
-      }
+          this.music = {
+            title: '',
+            artist: '',
+            src: '1',
+            pic: ''
+          }
+
+          this.music.src = this.$store.state.songLists[newValue].url
+          this.music.artist = this.songIds[newValue].ar[0].name
+          this.music.pic = this.songIds[newValue].al.picUrl
+          this.music.title = this.songIds[newValue].name
+          this.autoplay = true
+          this.playSong(1)
+        } else {
+          // message.error('版权原因不可播放！')
+          this.$nextTick(() => {
+            this.autoplay = false
+          })
+        }
+      }, 0)
     }
   }
   /**
