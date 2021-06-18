@@ -16,23 +16,28 @@
       justify-content: center;
       align-items: center;
       width: 20%;
-      height: 11vw;
+      height: 15vw;
 
       .item-img {
         display: flex;
         justify-content: center;
         width: 100%;
-        height: 10vw !important;
+        height: 15vw !important;
 
         &__collect {
           position: relative;
+          width: 100%;
+          border-radius: 10px;
+          margin: 10px;
 
           .collectioned {
             color: pink;
           }
 
           .iconfont {
-            font-size: 1vw;
+            font-size: 1.5vw;
+            color: white;
+            z-index: 99;
           }
 
           &__collection {
@@ -45,18 +50,19 @@
 
           &__collection:hover+.img {
             transform: scale(1.05);
-            border-radius: 10px;
           }
 
-          img {
-            width: 10vw !important;
-            height: 10vw !important;
-            border-radius: 10px;
+          .img {
+            width: 100% !important;
+            height: 15vw !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            background-size: cover !important;
             cursor: pointer;
             transition: all 0.5s;
           }
 
-          img:hover {
+          .img:hover {
             transform: scale(1.05);
             border-radius: 10px;
           }

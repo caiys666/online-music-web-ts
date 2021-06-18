@@ -1,17 +1,18 @@
 <template>
-  <div class="rank">
-    <h2 class="rank__title">排行榜</h2>
-    <div class="rank__list">
-      <div
-        class="rank__list__item"
-        v-for="(item, index) in rankList"
-        :key="index"
-        @click="handleClick(item)"
-      >
-        <img :src="item.coverImgUrl" alt="" class="bgimg" />
-      </div>
-    </div>
-  </div>
+  <a-spin :spinning="spinning">
+    <div class="rank">
+      <h2 class="rank__title">排行榜</h2>
+      <div class="rank__list">
+        <div
+          class="rank__list__item"
+          v-for="(item, index) in rankList"
+          :key="index"
+          @click="handleClick(item)"
+        >
+          <img :src="item.coverImgUrl" alt="" class="bgimg" />
+        </div>
+      </div></div
+  ></a-spin>
 </template>
 
 <script lang="ts">
@@ -32,10 +33,23 @@ export default class Rank extends Vue {
   songIds: any = []
   // 歌曲列表
   songLists: any = []
+
   // 歌词数组
   songLyric: any = []
+  // spinning
+  spinning: boolean = true
   mounted() {
     this.getRankListDetail()
+    this.setSpin()
+  }
+
+  /**
+   * 设置加载
+   */
+  setSpin() {
+    setTimeout(() => {
+      this.spinning = false
+    }, 2000)
   }
   /**
    * @note: 获取榜单详情信息

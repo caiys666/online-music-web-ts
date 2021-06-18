@@ -53,7 +53,7 @@ export default class App extends Vue {
   text-align: center;
   color: #2c3e50;
   // background-image: url('./assets/images/dilireba@2x.jpg');
-  background-image: linear-gradient(135deg, #fff5c3 10%, #9452a5 100%);
+  // background-image: linear-gradient(135deg, #fff5c3 10%, #9452a5 100%);
   background-repeat: repeat;
   background-position: center;
 }

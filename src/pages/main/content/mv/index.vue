@@ -1,42 +1,58 @@
 <template>
-  <div class="mv">
-    <!-- <mv-banner :bannerList="bannerList" /> -->
-    <div class="mv__search">
-      <img
-        class="mv__search__logo"
-        src="../../../../assets/images/girl@2x.png"
-        alt=""
-      />
-      <el-input placeholder="请输入内容" v-model="inputValue"> </el-input>
-      <el-button type="primary" icon="el-icon-search" @click="handleSearch"
-        >搜索</el-button
-      >
-    </div>
-    <div class="mv__sort">
-      <div
-        class="mv__sort__area item"
-        v-for="(item, index) in sortList"
-        :key="index"
-      >
-        <div class="title">{{ item.title }}</div>
-        <div
-          class="option"
-          :class="[sitem.checked ? 'actived' : '']"
-          v-for="(sitem, sindex) in item.item"
-          :key="sindex"
-          @click="handleCheckType(item, sitem, index, sindex)"
+  <a-spin :spinning="spinning">
+    <div class="mv">
+      <!-- <mv-banner :bannerList="bannerList" /> -->
+      <div class="mv__search">
+        <img
+          class="mv__search__logo"
+          src="../../../../assets/images/girl@2x.png"
+          alt=""
+        />
+        <el-input
+          placeholder="请输入内容"
+          v-model="inputValue"
+          @change="handleSearch"
+          @blur="handleSearch"
+          clearable
         >
-          {{ sitem.desc }}
+        </el-input>
+        <el-button type="primary" icon="el-icon-search" @click="handleSearch"
+          >搜索</el-button
+        >
+      </div>
+      <div class="mv__sort">
+        <div
+          class="mv__sort__area item"
+          v-for="(item, index) in sortList"
+          :key="index"
+        >
+          <div class="title">{{ item.title }}</div>
+          <div
+            class="option"
+            :class="[sitem.checked ? 'actived' : '']"
+            v-for="(sitem, sindex) in item.item"
+            :key="sindex"
+            @click="handleCheckType(item, sitem, index, sindex)"
+          >
+            {{ sitem.desc }}
+          </div>
         </div>
       </div>
-    </div>
-    <mv-list :mvList="mvList" />
-  </div>
+      <mv-list :mvList="mvList" />
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        :page-size="50"
+        @current-change="handleChangePagination"
+      >
+      </el-pagination></div
+  ></a-spin>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import music from '@/api/music.ts'
+import music from '@/api/music'
 import MvBanner from '@/components/lists/mv-banner/index.vue'
 import MvList from '@/components/lists/mv-list/index.vue'
 import './index.less'
@@ -59,6 +75,9 @@ export default class Mv extends Vue {
     offset: 0,
     type: 1004
   }
+  // 总数量
+  total: number = 0
+  spinning: boolean = true
   // 选择的筛选数组
   dataParams: any = {
     area: '全部',
@@ -111,26 +130,48 @@ export default class Mv extends Vue {
     /** 获取默认数据 */
     this.getData()
   }
+
+  /**
+   * 设置加载
+   */
+  setSpin() {
+    setTimeout(() => {
+      this.spinning = false
+    }, 2000)
+  }
+
   /** 监听输入框的内容是否为空  为空进行默认数据展示 */
   @Watch('inputValue', { immediate: true, deep: true })
   setDefaultData(newValue: any) {
-    console.log(newValue)
+    // console.log(newValue)
     if (newValue === '') {
       /** 获取默认数据 */
       this.getData()
     }
   }
   getData() {
+    this.spinning = true
     music.getMvAll(this.dataParams).then(res => {
       this.mvList = res.data.data
+      // console.log(res.data)
+      if (res.data.count) {
+        this.total = res.data.count
+      }
     })
+    this.setSpin()
   }
   /** 点击搜索按钮进行搜索  搜索的结果只包含视频 */
   handleSearch() {
-    this.searchParams.keywords = this.inputValue
-    music.getCloudSearch(this.searchParams).then(res => {
-      this.mvList = res.data.result.mvs
-    })
+    if (this.inputValue) {
+      this.searchParams.keywords = this.inputValue
+      music.getCloudSearch(this.searchParams).then(res => {
+        // console.log(res.data)
+        this.mvList = res.data.result.mvs
+        this.total = res.data.result.mvCount
+      })
+    } else {
+      this.getData()
+    }
   }
   /** 点击分类进行请求数据 */
   handleCheckType(item: any, sitem: any, index: number, sindex: number) {
@@ -138,7 +179,7 @@ export default class Mv extends Vue {
       k.checked = false
     })
     item.item[sindex].checked = true
-    console.log(sitem)
+    // console.log(sitem)
     switch (sitem.type) {
       case 'area': {
         this.dataParams.area = sitem.desc
@@ -152,6 +193,15 @@ export default class Mv extends Vue {
         this.dataParams.order = sitem.desc
       }
     }
+    this.getData()
+  }
+  /**
+   * @note: 分页逻辑
+   * @return {*}
+   * @param {number} cueenrtPage 当前页
+   */
+  handleChangePagination(cueenrtPage: number) {
+    this.dataParams.offset = cueenrtPage
     this.getData()
   }
 }

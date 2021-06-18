@@ -1,4 +1,30 @@
 .web {
     width: 100%;
     min-height: 100vh;
+
+    &-links {
+        display: flex;
+        flex-wrap: wrap;
+
+        &-item {
+            &-img {
+                width: 15vw;
+                height: 10vw;
+                margin: 1vw;
+                background-position: center !important;
+                background-repeat: no-repeat !important;
+                background-size: contain !important;
+                cursor: pointer;
+            }
+
+            &-name {
+                cursor: pointer;
+                font-size: 1.2vw;
+            }
+
+            &-name:hover {
+                color: #003aff;
+            }
+        }
+    }
 }
